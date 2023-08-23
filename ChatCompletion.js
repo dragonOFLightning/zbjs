@@ -2,7 +2,7 @@
 var scriptName = 'ChatCompletion';
 
 // 定义脚本版本
-var scriptVersion = '1.0.0';
+var scriptVersion = '1.0.1';
 
 // 定义脚本作者
 var scriptAuthor = ['ColdDragon'];
@@ -38,7 +38,7 @@ function TheChatCompletion() {
             // 获取数据包的Java字符串强转JavaScript字符串 JS字符串才能使用replace
             theMessage = thePacket.message.toString();
 
-            // 定义文本缩写对应的规则 请注意顺序会影响兼容性
+            // 定义文本缩写 [ key ] 对应的全拼 [ value ] 请注意顺序会影响兼容性
             var replaceRules = {
                 's1': 'Save 1 || Keep 1',
                 'ht': 'Hotel',
@@ -93,25 +93,43 @@ function TheChatCompletion() {
             // 循环判断 replaceRules
             for (var key in replaceRules) {
 
+                // 定义 [ skip ] 用于判断是否跳过循环 默认 false
+                var skip = false;
+
                 // 如果数据包中的Java字符串包含 [ key ] 属性 Java字符串才能使用contains
                 if (thePacket.message.contains(key)) {
 
-                    // 定义关键词和对应的值的映射
-                    var keywordMappings = {
+                    // 创建包含关键词和它们对应的键的对象
+                    var keywords = {
                         'difficult': 'ult',
                         'dead': 'de',
-                        'mode': 'de'
+                        'mode': 'de',
+                        'ligh': 'gh',
+                        'Ligh': 'gh',
+                        'light': 'ht',
+                        'Light': 'ht',
+                        'craft': 'ft',
                     };
 
-                    // 遍历关键词和值的映射
-                    for (var keyword in keywordMappings) {
+                    // 循环判断关键词
+                    for (var keyword in keywords) {
 
-                        // 如果关键词匹配了
-                        if (thePacket.message.contains(keyword) && key == keywordMappings[keyword]) {
+                        // 如果检测到含有关键词并且关键词含有补全的缩写
+                        if (thePacket.message.contains(keyword) && key === keywords[keyword]) {
 
-                            // 跳过循环
-                            continue;
+                            // 进行跳过关键词
+                            skip = true;
+
+                            // 退出循环
+                            break;
                         }
+                    }
+
+                    // 如果要跳过关键词
+                    if (skip) {
+
+                        // 跳过循环
+                        continue;
                     }
 
 
@@ -123,7 +141,7 @@ function TheChatCompletion() {
                 }
             }
         }
-    }
+    };
 }
 
 // 脚本启用时调用
