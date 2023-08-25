@@ -13,6 +13,34 @@ script.import('Tools.js');
 // 定义模块的构造函数
 function thePlayerList2D() {
 
+    // 定义 [ setting ] 对象 用于提供选项
+    var setting = {
+
+        // 布尔值选项 [ string名称 boolean默认值 ]
+        boolean: function (name, def) {
+            return value.createBoolean(name, def);
+        }
+    };
+
+    // 定义选项
+    var settings = {
+
+        // 是否暴力不显示 NPC 仅靠坐标模糊判断
+        noNPC: setting.boolean('NOArcadeNPC', true),
+
+        // 当 z 大于 700 时不渲染工具
+        renderTools: setting.boolean('AutoRenderTools', true),
+    };
+
+    // 定义模块选项 
+    this.addValues = function (values) {
+
+        // 循环添加选项
+        for (var i in settings) {
+            values.add(settings[i])
+        }
+    };
+
     // 定义模块名称
     this.getName = function () {
         return 'PlayerList2D';
@@ -52,7 +80,7 @@ function thePlayerList2D() {
         var renderList2D = [];
 
         // 定义 [ thisPlayerList ] 并存储获取到的玩家列表
-        var thisPlayerList = getPlayerList();
+        var thisPlayerList = getPlayerList(settings.noNPC.get());
 
         // 循环获取每个玩家对象
         for (var index = 0; index < thisPlayerList.length; index++) {
@@ -63,20 +91,24 @@ function thePlayerList2D() {
             // 数组中添加渲染玩家名称与声明的文本
             renderList2D.push(getPlayerRenderText(player));
 
-            // 尝试执行
-            try {
+            // 如果自动渲染开启 当玩家所在 z < 700 时就渲染 或者 如果关闭自动渲染 任何时候都渲染工具
+            if (settings.renderTools.get() && mc.thePlayer.getPosition().getZ() < 700 || !settings.renderTools.get()) {
 
-                // 获取工具渲染的列表
-                var toolsList2D = getToolsList2D(player);
+                // 尝试执行
+                try {
 
-                // 循环获取 [ toolsList2D ] 中的每个文本
-                for (var key in toolsList2D) {
+                    // 获取工具渲染的列表
+                    var toolsList2D = getToolsList2D(player);
 
-                    // 把工具的中的每个文本都添加到[renderList2D] 中
-                    renderList2D.push(toolsList2D[key]);
-                }
-                // 报错就略过
-            } catch (error) { }
+                    // 循环获取 [ toolsList2D ] 中的每个文本
+                    for (var key in toolsList2D) {
+
+                        // 把工具的中的每个文本都添加到[renderList2D] 中
+                        renderList2D.push(toolsList2D[key]);
+                    }
+                    // 报错就略过
+                } catch (error) {}
+            }
         }
 
         // 返回 renderList2D

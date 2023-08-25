@@ -25,3 +25,23 @@ This game has been recorded. Click here to watch the Replay!
 // Sending you to mini69CU!
 // Sending you to mini195S!
 // Sending you to mini158C! 
+
+//    Progress through the map to buy better weapons 
+
+// 13 68 19 de
+// 0 72 5 aa
+// 24 68 9 bb
+
+// mob.irongolem.hit        pistol
+// random.successful_hit    命中 
+// random.explode           shot gun
+// mob.horse.gallop         reload
+// random.door_open         open door
+// mob.zombie.metal         fixed windows
+// mob.zombie.wood          fixing windows
+// fireworks.blast_far      sniper 
+// random.bow               BlowDart || 弓射击
+// ambient.weather.thunder  ElderGun || 打雷
+// fire.ignite              ZombieZapper
+// dig.stone                GoldDigger
+// fireworks.largeBlast     Rifle || RainbowRifle

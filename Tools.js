@@ -1,3 +1,12 @@
+// 定义脚本名称
+var scriptName = 'Tools';
+
+// 定义脚本版本
+var scriptVersion = '2.1.0';
+
+// 定义脚本作者
+var scriptAuthor = ['ColdDragon'];
+
 // 定义 [ ItemSword ] 并引入mc的物品的剑类型 Class
 var ItemSword = Java.type('net.minecraft.item.ItemSword');
 
@@ -227,12 +236,12 @@ function SelfTool(index, maxDamage, item) {
 }
 
 // 定义 [ getPlayerList ] 用于获取全部玩家对象 Array
-function getPlayerList() {
+function getPlayerList(isAntiNPC) {
 
     // 创建 [ playerList ] 的数组用于存储符合条件的实体对象 Array
     var playerList = [];
 
-    // 循环遍历世界上每一个实体对象 Obtect
+    // 循环遍历世界上每一个实体对象 Object
     for (var index in mc.theWorld.loadedEntityList) {
 
         // 创建 [ theEntity ] 用于存储每一个实体对象 Entity
@@ -244,7 +253,28 @@ function getPlayerList() {
             // 如果实体对象不是隐身
             if (!theEntity.isInvisible()) {
 
-                // 添加到 [ playerList ]
+                // 如果防获取NPC开启
+                if (isAntiNPC) {
+
+                    // 获取当前实体 X integer
+                    var x = theEntity.getPosition().getX();
+
+                    // 如果实体的 x 大于 - 2538
+                    if (x > -2538) {
+
+                        // 获取 y integer
+                        var y = theEntity.getPosition().getY();
+
+                        // 如果 y 是 54 或者 y 是 55
+                        if (y === 54 || y === 55) {
+
+                            // 跳过循环
+                            continue;
+                        }
+                    }
+                }
+
+                // 添加到 [ playerList ] EntityPlayer
                 playerList.push(theEntity);
             }
         }
