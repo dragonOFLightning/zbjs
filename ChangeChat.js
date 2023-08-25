@@ -1,6 +1,7 @@
 /*
     聊天选择器
     可用于自动接受组队 自动刷屏 拦截关键聊天
+    鉴于功能较为完善 没有重写的想法
 */
 
 // 定义脚本名字
@@ -105,17 +106,18 @@ function theChangeChat() {
                 // 无差别拦截S02
                 event.cancelEvent();
 
-            } /*此处用else来增加效率*/else {
+            } /*此处用else来增加效率*/
+            else {
 
                 if (
                     // 检测到字符串 [ 'joined the lobby!' ] 并且 [ theNoRankMessage ] 启用时 或者
                     packet.getChatComponent().getUnformattedText().contains('joined the lobby!') && theNoRankMessage.get() ||
 
+                    // 检测到字符串 [ '进入了大厅！' ] 并且 [ theNoRankMessage ] 启用时 或者
                     packet.getChatComponent().getUnformattedText().contains('进入了大厅！ ') && theNoRankMessage.get() ||
 
-                    packet.getChatComponent().getUnformattedText().contains('进入了大厅！ <<< ') && theNoRankMessage.get() ||
-
-                    packet.getChatComponent().getUnformattedText().contains('即将于30秒后开始！ 点击这里加入！ ') && theNoGameTisChat.get() ||
+                    // 检测到字符串 [ '即将于30秒后开始！ 点击这里加入！' ] 并且 [ theNoGameTisChat ] 启用时 或者
+                    packet.getChatComponent().getUnformattedText().contains('即将于30秒后开始！ 点击这里加入！') && theNoGameTisChat.get() ||
 
                     // 检测到字符串 [ 'CLICK HERE to join!' ] 并且 [ theNoGameTisChat ] 启用时 或者
                     packet.getChatComponent().getUnformattedText().contains('CLICK HERE to join!') && theNoGameTisChat.get() ||
@@ -136,7 +138,7 @@ function theChangeChat() {
                     event.cancelEvent();
                 } // 匹配聊天字符串进行简单的拦截
 
-                // 检测到字符串 [ 'has invited you to join' ] 并且 [ theAntiFish ] 启用时
+                // 检测到字符串 [ 'has invited you to join' ] 并且 [ theAcceptParty ] 启用时
                 if (packet.getChatComponent().getUnformattedText().contains('has invited you to join') && theAcceptParty.get()) {
 
                     // 获取聊天文本
@@ -166,7 +168,7 @@ function theChangeChat() {
 
                     // 发送命令/party accept <玩家名字>
                     mc.thePlayer.sendChatMessage('/party accept ' + theName);
-                } // if (packet.getChatComponent().getUnformattedText().contains('has invited you to join') && theAcceptParty.get())
+                };
 
                 // 检测到字符串 [ 'cd-s-' ] 并且 [ theSpammerComm ] 启用时
                 if (packet.getChatComponent().getUnformattedText().contains('cd-s-') && theSpammerComm.get()) {
@@ -211,7 +213,7 @@ function theChangeChat() {
                             mc.thePlayer.sendChatMessage(text);
                         } // for (var i = 1; i <= count; i++)
                     } // else
-                } // if (packet.getChatComponent().getUnformattedText().contains('cd-s-') && theSpammerComm.get())
+                };
 
                 // 如果[ theChatComm ] 启用时
                 if (theChatComm.get()) {
@@ -244,8 +246,11 @@ function theChangeChat() {
 
 // 加载脚本时触发
 function onLoad() {
+
+    // 输出一句话表示正常
     chat.print('§9ChangeChat §2- §4Load');
 }
+
 // 创建模块
 var dragonChangeChat = new theChangeChat()
 
@@ -254,12 +259,14 @@ var dragonChangeChatClient
 
 // 启用脚本时触发
 function onEnable() {
+
     // 注册模块
     dragonChangeChatClient = moduleManager.registerModule(dragonChangeChat);
 }
 
 // 禁用脚本时触发
 function onDisable() {
+
     // 注销模块
     moduleManager.unregisterModule(dragonChangeChatClient);
 }
