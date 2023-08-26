@@ -152,7 +152,7 @@ function thePlayerList2D() {
                     continue;
                 };
 
-                // 添加到 [ playerList ] EntityPlayer
+                // 添加到 [ playerList ] net.minecraft.entity.player.EntityPlayer
                 playerList.push(theEntity);
             }
         };
