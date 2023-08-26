@@ -35,7 +35,7 @@ var Color = Java.type('java.awt.Color');
 var AxisAlignedBB = Java.type('net.minecraft.util.AxisAlignedBB');
 
 // 定义模块的构造函数
-function The() {
+function TheJS() {
 
     // 定义 [ setting ] 对象 用于提供选项
     var setting = {
@@ -159,21 +159,21 @@ function onLoad() {
 }
 
 // 创建模块的实例
-var dragon = new The();
+var dragonJS = new TheJS();
 
-// 定义 [ Client ] 用于存储注册信息
-var Client;
+// 定义 [ dragonJSClient ] 用于存储注册信息
+var dragonJSClient;
 
 // 脚本运行时调用
 function onEnable() {
 
     // 注册
-    Client = moduleManager.registerModule(dragon);
+    dragonJSClient = moduleManager.registerModule(dragonJS);
 }
 
 // 脚本禁用时调用
 function onDisable() {
 
     // 注销
-    moduleManager.unregisterModule(Client);
+    moduleManager.unregisterModule(dragonJSClient);
 }
