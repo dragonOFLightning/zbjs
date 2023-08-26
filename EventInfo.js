@@ -34,7 +34,7 @@ function TheEventInfo() {
     var settings = {
 
         // 是否渲染经济
-        renderGold: setting.boolean('Gold', true),
+        renderGame: setting.boolean('Game', true),
 
         // 是否渲染大厅事件
         renderLobby: setting.boolean('Lobby', true),
@@ -127,8 +127,8 @@ function TheEventInfo() {
     function isRenderChat(string) {
 
         // 此逻辑过于简单 懒得注释 仅需注意 string是一个 java.lang.String 类型
-        return string.contains('Gold') && settings.renderGold.get() && isGoldChat(string) ||
-            string.contains('金钱') && settings.renderGold.get() && isGoldChat(string) ||
+        return string.contains('Gold') && settings.renderGame.get() && isGoldChat(string) ||
+            string.contains('金钱') && settings.renderGame.get() && isGoldChat(string) ||
             string.contains('joined the lobby!') && settings.renderLobby.get() ||
             string.contains('CLICK HERE to join!') && settings.renderLobby.get() ||
             string.contains('进入了大厅！') && settings.renderLobby.get() ||

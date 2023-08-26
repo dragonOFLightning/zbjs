@@ -45,3 +45,6 @@ This game has been recorded. Click here to watch the Replay!
 // fire.ignite              ZombieZapper
 // dig.stone                GoldDigger
 // fireworks.largeBlast     Rifle || RainbowRifle
+
+// +9硬币！ (Double Coins + EXP, _josep的Network Booster) 
+// +9 coins! (Double Coins + EXP, _josep's Network Booster) 
