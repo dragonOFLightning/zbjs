@@ -154,7 +154,7 @@ function TheJS() {
 // 脚本启用时调用
 function onLoad() {
 
-    // 输出一句话表示正常
+    // 输出一句话表示已加载
     chat.print('§9' + 'JS' + ' §2- §4Load');
 }
 
