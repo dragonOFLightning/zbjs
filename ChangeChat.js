@@ -361,8 +361,11 @@ function TheChangeChat() {
                 // 获取 ':' 后面的字符 需要+2才能精确获取 @string
                 var string = text.toString().substring(index + 2);
 
+                // 辨别其他的字符
+                var notL = string.indexOf('Le') === -1;
+
                 // 判断是否包含 L 和 自己名称 @boolean
-                var includesSelf = string.indexOf(mc.thePlayer.getName().toString()) !== -1;
+                var includesSelf = string.indexOf(mc.thePlayer.getName().toString()) !== -1 && notL;
 
                 // 判断是否 全是L @boolean
                 var allL = /^[lL]+$/i.test(string);
