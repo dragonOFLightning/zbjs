@@ -2,7 +2,7 @@
     聊天选择器
         - 可用于低血量提醒
         - 可用于补全缩写
-        - 可用于拦截不良信息
+        - 可用于拦截垃圾信息
         - 可使用cd-s-执行刷屏命令
 
     此脚本为重制版 更加模块化 添加更多功能 类型更清晰 移除无用功能
@@ -12,7 +12,7 @@
 var scriptName = 'ChangeChat';
 
 // 定义脚本版本
-var scriptVersion = '2.0.0';
+var scriptVersion = '2.1.0';
 
 // 定义脚本作者
 var scriptAuthor = ['ColdDragon'];
@@ -56,7 +56,7 @@ function TheChangeChat() {
         theAutoSendLag: setting.boolean('SendLag', true),
 
         // 定义布尔型选项 [ LowHPTis ] 意为 是否发送血量提醒
-        theLowHPTis: setting.boolean('LowHPTis', true),
+        theLowHPTis: setting.boolean('LowHPTis', false),
 
         // 定义布尔值选项 [ SendDanger ] 意为 是否发送残血提醒
         theSendDanger: setting.boolean('SendDanger', true),
@@ -77,7 +77,7 @@ function TheChangeChat() {
         theWarnHP: setting.float('WarnHP', 15, 9.1, 25),
 
         // 定义布尔型选项 [ ClearChat ] 意为 是否无差别拦截 [ S02PacketChat ]
-        clearChat: setting.boolean('ClearChat', true),
+        clearChat: setting.boolean('ClearChat', false),
 
         // 定义布尔型选项 [ SpammerComm ] 意为 是否启用聊天刷屏命令
         spammerComm: setting.boolean('SpammerComm', false),
@@ -234,24 +234,32 @@ function TheChangeChat() {
         // 如果包的类型是 [ S02PacketChat ]
         if (thePacket instanceof S02PacketChat) {
 
-            // 获取服务器聊天文本 @java.lang.String
-            var chatText = thePacket.getChatComponent().getUnformattedText();
+            // 如果纯净聊天模式启动
+            if (settings.clearChat.get()) {
 
-            // 判断聊天是否是不文明的聊天 并且启用了拦截不文明聊天
-            if (isBadChat(chatText) && settings.theAntiBadChat.get()) {
-
-                // 拦截聊天
+                // 无差别拦截 [ S02PacketChat ] 注意 : 仅聊天栏不接收[ S02PacketChat ] 其他类似的脚本依然能获取到数据包 
                 event.cancelEvent();
+            } else {
 
-                // 否则 判断聊天是否是 组队邀请信息 并且启用了自动进组队
-            } else if (chatText.contains('has invited you to join') && settings.theAutoJoinParty.get()) {
+                // 获取服务器聊天文本 @java.lang.String
+                var chatText = thePacket.getChatComponent().getUnformattedText();
 
-                // 执行进入组队
-                doJoinParty(chatText);
-            } else if (chatText.contains('cd-s-') && settings.spammerComm.get()) {
+                // 判断聊天是否是不文明的聊天 并且启用了拦截不文明聊天
+                if (isBadChat(chatText) && settings.theAntiBadChat.get()) {
 
-                // 执行聊天命令刷屏
-                doSpammerComm(chatText);
+                    // 拦截聊天
+                    event.cancelEvent();
+
+                    // 否则 判断聊天是否是 组队邀请信息 并且启用了自动进组队
+                } else if (chatText.contains('has invited you to join') && settings.theAutoJoinParty.get()) {
+
+                    // 执行进入组队
+                    doJoinParty(chatText);
+                } else if (chatText.contains('cd-s-') && settings.spammerComm.get()) {
+
+                    // 执行聊天命令刷屏
+                    doSpammerComm(chatText);
+                }
             }
 
             // 如果包的类型是 [ S03PacketTimeUpdate ] 并且启用了 [ theAutoSendLag ]
@@ -340,17 +348,21 @@ function TheChangeChat() {
         mc.thePlayer.sendChatMessage('/party accept ' + theName);
     }
 
-    // 定义 [ isBadChat ] (java.lang.String text) 用于判断字符串是否包含不文明的内容 @boolean
+    // 定义 [ isBadChat ] (java.lang.String text) 用于判断字符串是否包含垃圾内容 @boolean
     function isBadChat(text) {
 
-        // 判断是否包含以下关键词
-        if (text.contains('傻逼') || text.contains('死妈') || text.contains('你妈') ||
+        // 判断是否是空字符串
+        if (/^\s*$/.test(text)) {
+            return true;
+        }
+        // 否则 判断是否包含以下关键词
+        else if (text.contains('傻逼') || text.contains('死妈') || text.contains('你妈') ||
             text.contains('妈逼') || text.contains('死全家') || text.contains('giao') ||
             text.contains('奥利给') || text.contains('蔡徐坤')) {
             return true;
-
-            // 否则 判断是否包含 L
-        } else if (text.contains('L') || text.contains('l')) {
+        }
+        // 否则 判断是否包含 L
+        else if (text.contains('L') || text.contains('l')) {
 
             // 获取 > 后的的索引 @integer
             var index = text.toString().indexOf(':');
