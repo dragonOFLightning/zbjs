@@ -21,32 +21,29 @@ var AxisAlignedBB = Java.type('net.minecraft.util.AxisAlignedBB');
 // 定义 [ ZombiesEntity ] 用于存储所需的实体类型
 var ZombiesEntity = {
 
-    // 引入实体类型 [ EntityCreeper ] - 爬行者
-    EntityCreeper: Java.type('net.minecraft.entity.monster.EntityCreeper'),
-
-    // 引入实体类型 [ EntityGhast ] - 恶魂
-    EntityGhast: Java.type('net.minecraft.entity.monster.EntityGhast'),
-
-    // 引入实体类型 [ EntitySlime ] - 史莱姆
-    EntitySlime: Java.type('net.minecraft.entity.monster.EntitySlime'),
-
-    // 引入实体类型 [ EntityWitch ] - 女巫
-    EntityWitch: Java.type('net.minecraft.entity.monster.EntityWitch'),
-
     // 引入实体类型 [ EntityZombie ] - 僵尸
     EntityZombie: Java.type('net.minecraft.entity.monster.EntityZombie'),
 
     // 引入实体类型 [ EntityPigZombie ] - 猪僵尸
     EntityPigZombie: Java.type('net.minecraft.entity.monster.EntityPigZombie'),
 
-    // 引入实体类型 [ EntityCaveSpider ] - 洞穴蜘蛛
-    EntityCaveSpider: Java.type('net.minecraft.entity.monster.EntityCaveSpider'),
+    // 引入实体类型 [ EntityMagmaCube ] - 岩浆怪
+    EntityMagmaCube: Java.type('net.minecraft.entity.monster.EntityMagmaCube'),
+
+    // 引入实体类型 [ EntitySlime ] - 史莱姆
+    EntitySlime: Java.type('net.minecraft.entity.monster.EntitySlime'),
+
+    // 引入实体类型 [ EntityIronGolem ] - 铁傀儡
+    EntityGolem: Java.type('net.minecraft.entity.monster.EntityIronGolem'),
+
+    // 引入实体类型 [ EntityWolf ] - 狼
+    EntityWolf: Java.type('net.minecraft.entity.passive.EntityWolf'),
 
     // 引入实体类型 [ EntityGiantZombie ] - 巨人僵尸
     EntityGiantZombie: Java.type('net.minecraft.entity.monster.EntityGiantZombie'),
 
-    // 引入实体类型 [ EntityIronGolem ] - 铁傀儡
-    EntityGolem: Java.type('net.minecraft.entity.monster.EntityIronGolem'),
+    // 引入实体类型 [ EntityGhast ] - 恶魂
+    EntityGhast: Java.type('net.minecraft.entity.monster.EntityGhast'),
 
     // 引入实体类型 [ EntityBlaze ] - 烈焰
     EntityBlaze: Java.type('net.minecraft.entity.monster.EntityBlaze'),
@@ -54,14 +51,17 @@ var ZombiesEntity = {
     // 引入实体类型 [ EntitySkeleton ] - 骷髅
     EntitySkeleton: Java.type('net.minecraft.entity.monster.EntitySkeleton'),
 
+    // 引入实体类型 [ EntityCreeper ] - 爬行者
+    EntityCreeper: Java.type('net.minecraft.entity.monster.EntityCreeper'),
+
+    // 引入实体类型 [ EntityWitch ] - 女巫
+    EntityWitch: Java.type('net.minecraft.entity.monster.EntityWitch'),
+
+    // 引入实体类型 [ EntityCaveSpider ] - 洞穴蜘蛛
+    EntityCaveSpider: Java.type('net.minecraft.entity.monster.EntityCaveSpider'),
+
     // 引入实体类型 [ EntityEndermite ] - 末影螨
     EntityEndermite: Java.type('net.minecraft.entity.monster.EntityEndermite'),
-
-    // 引入实体类型 [ EntityWolf ] - 狼
-    EntityWolf: Java.type('net.minecraft.entity.passive.EntityWolf'),
-
-    // 引入实体类型 [ EntityMagmaCube ] - 岩浆怪
-    EntityMagmaCube: Java.type('net.minecraft.entity.monster.EntityMagmaCube'),
 
     // 引入实体类型 [ EntityWither ] - 凋灵
     EntityWither: Java.type('net.minecraft.entity.boss.EntityWither'),
@@ -109,15 +109,12 @@ function theZombiesList3D() {
     this.addValues = function (values) {
 
         // 获取每一个选项
-        for (var i in settings) {
+        for (var index in settings) {
 
             // 把每个选项添加进去
-            values.add(settings[i])
+            values.add(settings[index])
         }
     };
-
-    // 定义 [ theRenderEntityList3D ] 用于存储需要渲染的实体对象
-    var theRenderEntityList3D = [];
 
     // 定义模块名称
     this.getName = function () {
@@ -134,6 +131,9 @@ function theZombiesList3D() {
         return 'Render';
     };
 
+    // 定义 [ theRenderEntityList3D ] 用于存储需要渲染的实体对象
+    var theRenderEntityList3D = [];
+
     // 定义模块更新
     this.onUpdate = function () {
 
@@ -147,10 +147,20 @@ function theZombiesList3D() {
         // 遍历 [ theZombieList3D ] 中的每一个 实体对象
         for (var index = 0; index < theRenderEntityList3D.length; index++) {
 
-            // 获取实体对象
+            // 获取实体对象 @any
             var theEntity = theRenderEntityList3D[index];
 
-            // 获取实体的 minX 和 minZ 
+            // 获取实体的生命值 @float
+            var health = theEntity.getHealth();
+
+            // 如果实体的血量为0 死了就不渲染了
+            if (health === 0) {
+
+                // 跳过循环
+                continue;
+            }
+
+            // 获取实体的 minX 和 minZ
             var minX = theEntity.getEntityBoundingBox().minX;
             var minZ = theEntity.getEntityBoundingBox().minZ;
 
@@ -165,13 +175,13 @@ function theZombiesList3D() {
             // 获取实体的最大高度
             var maxY = theEntity.getEntityBoundingBox().maxY;
 
-            // 定义 [ theRenderText ] 用于存储渲染的文本
+            // 定义 [ theRenderText ] 用于存储渲染的文本 @string
             var theRenderText;
 
-            // 获取实体的血量
-            var theEntityHealth = theEntity.getHealth().toFixed(1);
+            // 获取实体的血量 @string
+            var theEntityHealth = health.toFixed(1);
 
-            // 获取实体的名称
+            // 获取实体的名称 @java.lang.String
             var theEntityName = theEntity.getName();
 
             // 如果实体没有受伤
@@ -234,6 +244,7 @@ function theZombiesList3D() {
 
                     // 如果开启了 [ theAntiTitle ]
                     if (settings.theAntiTitle.get()) {
+
                         // 如果实体类型是凋零并且血量为300
                         if (theEntity instanceof ZombiesEntity.EntityWither && theEntity.getHealth() == 300) {
 
@@ -249,7 +260,7 @@ function theZombiesList3D() {
         }
         // 返回 [ theZombieList ]
         return theZombieList;
-    }
+    };
 }
 
 // 脚本启用时调用
