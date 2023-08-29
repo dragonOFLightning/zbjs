@@ -2,7 +2,7 @@
 var scriptName = 'EventInfo';
 
 // 定义脚本版本
-var scriptVersion = '1.0.0';
+var scriptVersion = '1.0.1';
 
 // 定义脚本作者
 var scriptAuthor = ['ColdDragon'];
@@ -52,8 +52,8 @@ function TheEventInfo() {
         renderTime: setting.integer('RenderTime', 120, 1, 72000),
 
         // 设定渲染位置 
-        theDrawStringX: setting.integer('Render2DX', 500, 0, 900),
-        theDrawStringY: setting.integer('Render2DY', 230, 0, 900),
+        theDrawStringX: setting.integer('Render2DX', 3, 0, 900),
+        theDrawStringY: setting.integer('Render2DY', 150, 0, 900),
     };
 
     // 定义模块选项
@@ -139,14 +139,15 @@ function TheEventInfo() {
         // 此逻辑过于简单 懒得注释 仅需注意 string是一个 java.lang.String 类型
         return string.contains('Gold') && settings.renderGame.get() && isGoldChat(string) ||
             string.contains('金钱') && settings.renderGame.get() && isGoldChat(string) ||
+
             string.contains('joined the lobby!') && settings.renderLobby.get() ||
             string.contains('CLICK HERE to join!') && settings.renderLobby.get() ||
             string.contains('进入了大厅！') && settings.renderLobby.get() ||
             string.contains('即将于30秒后开始！ 点击这里加入！') && settings.renderLobby.get() ||
-            string.contains('找到了一个✰✰✰✰✰Mystery Box！') && settings.renderLobby.get() ||
-            string.contains('Mystery Box!') && settings.renderLobby.get() ||
+            string.contains('Mystery Box') && settings.renderLobby.get() ||
             string.contains('You must wait another') && settings.renderLobby.get() ||
             string.contains('在使用这个之前，你需要等待') && settings.renderLobby.get() ||
+
             string.contains('嘻哈') && settings.renderPlayer.get() ||
             string.contains('喜哈') && settings.renderPlayer.get();
     };
