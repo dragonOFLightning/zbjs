@@ -93,6 +93,9 @@ function TheEventInfo() {
 
     };
 
+    // 定义全局变量 [lastChatText] 用于存储上一个文本 @java.lang.string
+    var lastChatText;
+
     // 模块检测到数据包时调用
     this.onPacket = function (event) {
 
@@ -102,18 +105,25 @@ function TheEventInfo() {
         // 如果包的类型是 [ S02PacketChat ]
         if (thePacket instanceof S02PacketChat) {
 
-            // 获取文本 java.lang.String
-            var chatText = thePacket.getChatComponent().getUnformattedText();
+            // 定义 [chatText] 用于存储文本 @any
+            var chatText;
 
-            // 检测文本包含关键词
-            if (isRenderChat(chatText)) {
+            // 如果聊天类型不是 2
+            if (thePacket.getType() !== 2) {
+
+                // 获取聊天文本 @java.lang.String
+                chatText = thePacket.getChatComponent().getUnformattedText();
+            }
+
+            // 检测文本包含关键词 或者与上一个重复 因为函数只有return 所以不能在函数中判断
+            if (isRenderChat(chatText) || chatText === lastChatText && settings.renderPlayer.get()) {
 
                 // 将文本添加至渲染队列
                 renderDataList.push(new RenderData(chatText, settings.renderTime.get()));
 
                 // 拦截聊天
                 event.cancelEvent();
-            }
+            };
 
             // 否则 如果检测到 [ S0BPacketAnimation ] 并且动画类型为 [ 4 ]
         } else if (thePacket instanceof S0BPacketAnimation && thePacket.getAnimationType() == 4) {
