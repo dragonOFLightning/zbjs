@@ -48,3 +48,5 @@ This game has been recorded. Click here to watch the Replay!
 
 // +9硬币！ (Double Coins + EXP, _josep的Network Booster) 
 // +9 coins! (Double Coins + EXP, _josep's Network Booster) 
+
+// Lovests was knocked down by Zombie in Alley! You have 25s to get revived! 

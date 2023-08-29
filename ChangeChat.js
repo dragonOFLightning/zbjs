@@ -2,7 +2,7 @@
     聊天选择器
         - 可用于低血量提醒
         - 可用于补全缩写
-        - 可用于拦截垃圾信息
+        - 可用于拦截不良信息
         - 可使用cd-s-执行刷屏命令
 
     此脚本为重制版 更加模块化 添加更多功能 类型更清晰 移除无用功能
@@ -12,7 +12,7 @@
 var scriptName = 'ChangeChat';
 
 // 定义脚本版本
-var scriptVersion = '2.1.0';
+var scriptVersion = '2.0.0';
 
 // 定义脚本作者
 var scriptAuthor = ['ColdDragon'];
@@ -444,7 +444,10 @@ function TheChangeChat() {
             'ms': 'Mansion',
             'apt': 'Apartment',
             'o1': 'The Old One',
-            'ss': 'Shopping Surging'
+            'ss': 'Shopping Surging',
+            'lr': 'Lightning Rod',
+            'pc': 'Perk Corner',
+            'rc': 'Roller Coaster'
         };
 
         // 循环判断 replaceRules
@@ -464,11 +467,11 @@ function TheChangeChat() {
                     'dea': 'de',
                     'igh': 'gh',
                     'ght': 'ht',
-                    'craft': 'ft',
-                    'succ': 'cc',
+                    'aft': 'ft',
+                    'ucc': 'cc',
                     'ess': 'ss',
                     'ide': 'de',
-                    'unde': 'de',
+                    'nde': 'de',
                     'ode': 'de',
                     'ded': 'de',
                     'art': 'rt',
@@ -476,7 +479,9 @@ function TheChangeChat() {
                     'obb': 'bb',
                     'der': 'de',
                     'ewa': 'ew',
-                    'arr': 'rr'
+                    'arr': 'rr',
+                    'ift': 'ft',
+                    'acc': 'cc',
                 };
 
                 // 循环判断关键词
