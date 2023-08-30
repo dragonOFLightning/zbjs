@@ -2,7 +2,7 @@
 var scriptName = 'EventInfo';
 
 // 定义脚本版本
-var scriptVersion = '1.0.1';
+var scriptVersion = '1.0.0';
 
 // 定义脚本作者
 var scriptAuthor = ['ColdDragon'];
@@ -52,8 +52,8 @@ function TheEventInfo() {
         renderTime: setting.integer('RenderTime', 120, 1, 72000),
 
         // 设定渲染位置 
-        theDrawStringX: setting.integer('Render2DX', 3, 0, 900),
-        theDrawStringY: setting.integer('Render2DY', 150, 0, 900),
+        theDrawStringX: setting.integer('Render2DX', 500, 0, 900),
+        theDrawStringY: setting.integer('Render2DY', 230, 0, 900),
     };
 
     // 定义模块选项
@@ -105,7 +105,7 @@ function TheEventInfo() {
         // 如果包的类型是 [ S02PacketChat ]
         if (thePacket instanceof S02PacketChat) {
 
-            // 定义 [chatText] 用于存储文本 @any
+            // 定义 [chatText] 用于存储文本 @java.lang.String
             var chatText;
 
             // 如果聊天类型不是 2
@@ -113,7 +113,7 @@ function TheEventInfo() {
 
                 // 获取聊天文本 @java.lang.String
                 chatText = thePacket.getChatComponent().getUnformattedText();
-            }
+            };
 
             // 检测文本包含关键词 或者与上一个重复 因为函数只有return 所以不能在函数中判断
             if (isRenderChat(chatText) || chatText === lastChatText && settings.renderPlayer.get()) {
@@ -124,6 +124,9 @@ function TheEventInfo() {
                 // 拦截聊天
                 event.cancelEvent();
             };
+
+            // 纪录聊天
+            lastChatText = chatText;
 
             // 否则 如果检测到 [ S0BPacketAnimation ] 并且动画类型为 [ 4 ]
         } else if (thePacket instanceof S0BPacketAnimation && thePacket.getAnimationType() == 4) {
@@ -139,15 +142,14 @@ function TheEventInfo() {
         // 此逻辑过于简单 懒得注释 仅需注意 string是一个 java.lang.String 类型
         return string.contains('Gold') && settings.renderGame.get() && isGoldChat(string) ||
             string.contains('金钱') && settings.renderGame.get() && isGoldChat(string) ||
-
             string.contains('joined the lobby!') && settings.renderLobby.get() ||
             string.contains('CLICK HERE to join!') && settings.renderLobby.get() ||
             string.contains('进入了大厅！') && settings.renderLobby.get() ||
             string.contains('即将于30秒后开始！ 点击这里加入！') && settings.renderLobby.get() ||
-            string.contains('Mystery Box') && settings.renderLobby.get() ||
+            string.contains('找到了一个✰✰✰✰✰Mystery Box！') && settings.renderLobby.get() ||
+            string.contains('Mystery Box!') && settings.renderLobby.get() ||
             string.contains('You must wait another') && settings.renderLobby.get() ||
             string.contains('在使用这个之前，你需要等待') && settings.renderLobby.get() ||
-
             string.contains('嘻哈') && settings.renderPlayer.get() ||
             string.contains('喜哈') && settings.renderPlayer.get();
     };
@@ -199,10 +201,10 @@ function TheEventInfo() {
     // 定义渲染数据的构造函数
     function RenderData(text, time) {
 
-        // [ string ] 用于存储渲染文本
+        // [ string ] 用于存储渲染文本 @string
         this.string = text;
 
-        // [ tick ] 用于计数渲染的时长
+        // [ tick ] 用于计数渲染的时长 @integer
         this.tick = time;
     }
 }
