@@ -156,7 +156,8 @@ function theZombiesList3D() {
         // 定义并获取z轴 @int
         var z = mc.thePlayer.getPosition().getZ();
 
-        atLobby = !imGame();
+        // 如果不在游戏 就是在大厅
+        atLobby = !inGame();
 
         // 通过z判断当前场景
         ground = atLobby ? 'Lobby' : tick > 0 ? z > 10 ? 'DeadEnd' : z > 7 ? 'BadBlood' : 'AlienArcadium' : ground;
