@@ -2,7 +2,7 @@
 var scriptName = 'Tools';
 
 // 定义脚本版本
-var scriptVersion = '2.1.1';
+var scriptVersion = '2.1.2';
 
 // 定义脚本作者
 var scriptAuthor = ['ColdDragon'];
@@ -43,15 +43,15 @@ function getRenderText(index, itemName, itemMaxDamage, lastDamage, toolStack, pl
         if (mc.thePlayer.inventory.currentItem == index) {
 
             // 返回一串拼接的文本
-            return '§4§l' + '■' + '§r' + itemName + '-' + '总耐久度:' + itemMaxDamage + '/' + '剩余耐久:' + lastDamage + toolStack;
+            return '§4§l' + '■' + '§r' + itemName + '[ ' + lastDamage + '/' + itemMaxDamage + ' ]' + toolStack;
         };
 
         // 返回一串拼接的文本
-        return '§f§l' + '■' + '§r' + itemName + '-' + '总耐久度:' + itemMaxDamage + '/' + '剩余耐久:' + lastDamage + toolStack;
+        return '§f§l' + '■' + '§r' + itemName + '[ ' + lastDamage + '/' + itemMaxDamage + ' ]' + toolStack;
     };
 
     // 返回一串拼接的文本
-    return '§4§l' + '■' + '§r' + itemName + '-' + '总耐久度:' + itemMaxDamage + '/' + '剩余耐久:' + lastDamage + toolStack;
+    return '§4§l' + '■' + '§r' + itemName + '[ ' + lastDamage + '/' + itemMaxDamage + ' ]' + toolStack;
 };
 
 // 定义 [ getToolsList ] 用于获取工具列表 Array<any>
@@ -112,9 +112,21 @@ function Tool(tool) {
     // 获取并存储工具数量 integer
     this.count = this.tool.stackSize;
 
-    // 此处未完工 默认 无状态 String
+    // 用于其他玩家的武器获取状态 但无法获取防砍状态
     this.getStack = function () {
-        return '§e§l无状态';
+
+        // 判断一下是不是拿剑 或者 没有拿工具
+        if (tool instanceof ItemSword || this.maxDamage === 0) {
+
+            // 拿剑就无状态 
+            return '§e§l无状态';
+        }
+
+        // 定义表达式 判断一下 如果剩余耐久 小于 总耐久度 就 正在换弹 否则 正常 @string
+        var getLoadStack = this.lastDamage < this.maxDamage ? '§4§l正在换弹' : '§2§l正常';
+
+        // 返回 判断一下 如果剩余耐久小于 4 就 假卡壳 否则 用getLoadStack 判断 @string
+        return this.lastDamage < 4 ? '§e§l假卡壳' : getLoadStack;
     }
 }
 
@@ -204,30 +216,37 @@ function SelfTool(index, maxDamage, item) {
         };
 
         // 判断是否处于换弹状态 即 剩余耐久小于总耐久 integer < integer ? String : String
-        var isLoad = this.lastDamage < this.maxDamage ? '§4§l正在换弹' : '§2§l正常';
+        var getLoadStack = this.lastDamage < this.maxDamage ? '§4§l正在换弹' : '§2§l正常';
 
         // 如果在防砍
         if (this.isBlock()) {
 
-            // 如果物品数量=>integer 小于 2
-            if (this.count < 2) {
+            // 判断一下数量是不是小于2 是就卡壳 不是就 getLoadStack @string
+            return this.count < 2 ? '§c§l卡壳' : getLoadStack;
 
-                // 返回假卡壳 String
-                return '§c§l卡壳'
-            };
-
-            // 返回判断是否在换弹 String
-            return isLoad;
         };
 
-        // 如果剩余耐久=>integer 小于 4
-        if (this.lastDamage < 4) {
-
-            // 返回文本 String
-            return '§e§l假卡壳';
-        };
-
-        // 返回判断是否在换弹 String
-        return isLoad
+        // 判断一下剩余耐久是不是小于4 是就 假卡壳 不是就 getLoadStack @string
+        return this.lastDamage < 4 ? '§e§l假卡壳' : getLoadStack;
     }
 }
+
+// 定义 [ inGame ] 用于判断是否在游戏中 Boolean
+function inGame() {
+
+    // 尝试调用
+    try {
+
+        // 获取计分板名称 java.lang.String
+        var name = mc.theWorld.getScoreboard().getScores()[0].getObjective().getName();
+
+        // 判断name是否包含以下的字符串
+        return name === 'PreScoreboard' || name === 'health' || name === 'health_tab' || name === 'ZScoreboard';
+
+        // 报错就返回 false
+    } catch (error) {
+
+        // 如果没有计分板就不在游戏 因为游戏默认都有计分板
+        return false;
+    }
+};
