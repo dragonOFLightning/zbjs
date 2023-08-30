@@ -12,7 +12,7 @@
 var scriptName = 'ChangeChat';
 
 // 定义脚本版本
-var scriptVersion = '2.0.0';
+var scriptVersion = '2.0.1';
 
 // 定义脚本作者
 var scriptAuthor = ['ColdDragon'];
@@ -402,6 +402,7 @@ function TheChangeChat() {
             'ps': 'Power Station',
             'rt': 'Roof Top',
             'gy': 'Graveyard',
+            'rc': 'Roller Coaster',
             't-de': '/play arcade_zombies_dead_end',
             't-bb': '/play arcade_zombies_bad_blood',
             't-aa': '/play arcade_zombies_alien_arcadium',
@@ -447,7 +448,6 @@ function TheChangeChat() {
             'ss': 'Shopping Surging',
             'lr': 'Lightning Rod',
             'pc': 'Perk Corner',
-            'rc': 'Roller Coaster'
         };
 
         // 循环判断 replaceRules
@@ -462,6 +462,7 @@ function TheChangeChat() {
                 // 创建包含关键词和它们对应的键的对象
                 var keywords = {
                     'cult': 'ult',
+                    'aaa': 'aa',
                     'nde': 'de',
                     'ade': 'de',
                     'dea': 'de',
@@ -482,6 +483,7 @@ function TheChangeChat() {
                     'arr': 'rr',
                     'ift': 'ft',
                     'acc': 'cc',
+                    'sst': 'ss',
                 };
 
                 // 循环判断关键词
