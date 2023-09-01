@@ -2,7 +2,7 @@
 var scriptName = 'Tools';
 
 // 定义脚本版本
-var scriptVersion = '2.1.2';
+var scriptVersion = '2.1.3';
 
 // 定义脚本作者
 var scriptAuthor = ['ColdDragon'];
@@ -209,7 +209,7 @@ function SelfTool(index, maxDamage, item) {
     this.getStack = function () {
 
         // 如果拿着索引0物品
-        if (mc.thePlayer.inventory.currentItem == this.index && this.index == 0) {
+        if (this.index == 0) {
 
             // 根据是否在防砍返回不同的字符串 Boolean ? String : String
             return this.isBlock() ? '§e§l正在防砍' : '§2§l正常'
