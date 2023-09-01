@@ -2,7 +2,7 @@
 var scriptName = 'EventInfo';
 
 // 定义脚本版本
-var scriptVersion = '1.0.0';
+var scriptVersion = '1.0.1';
 
 // 定义脚本作者
 var scriptAuthor = ['ColdDragon'];
@@ -142,6 +142,7 @@ function TheEventInfo() {
         // 此逻辑过于简单 懒得注释 仅需注意 string是一个 java.lang.String 类型
         return string.contains('Gold') && settings.renderGame.get() && isGoldChat(string) ||
             string.contains('金钱') && settings.renderGame.get() && isGoldChat(string) ||
+
             string.contains('joined the lobby!') && settings.renderLobby.get() ||
             string.contains('CLICK HERE to join!') && settings.renderLobby.get() ||
             string.contains('进入了大厅！') && settings.renderLobby.get() ||
@@ -150,11 +151,12 @@ function TheEventInfo() {
             string.contains('Mystery Box!') && settings.renderLobby.get() ||
             string.contains('You must wait another') && settings.renderLobby.get() ||
             string.contains('在使用这个之前，你需要等待') && settings.renderLobby.get() ||
+
             string.contains('嘻哈') && settings.renderPlayer.get() ||
             string.contains('喜哈') && settings.renderPlayer.get();
     };
 
-    // 定义 [ isGoldChat ] 用于判断是否为经济聊天 Boolean
+    // 定义 [ isGoldChat ] 用于判断是否为经济类型的聊天 Boolean
     function isGoldChat(theString) {
 
         // 获取存在 '+' 的索引 integer
@@ -180,16 +182,16 @@ function TheEventInfo() {
     // 定义模块渲染2D
     this.onRender2D = function () {
 
-        // 遍历 [ renderDataList ] 中的每个 经济数据对象
+        // 遍历 [ renderDataList ] 中的每个 数据对象
         for (var index = 0; index < renderDataList.length; index++) {
 
-            // 渲染经济数据的 [ string ] 
+            // 渲染数据的 [ string ] 
             mc.fontRendererObj.drawString(renderDataList[index].string, settings.theDrawStringX.get(), settings.theDrawStringY.get() + 9 * index, 0xffffff);
 
-            // 经济数据中的 [ tick ] 自减
+            // 数据中的 [ tick ] 自减
             renderDataList[index].tick--;
 
-            // 如果经济数据中的 [ tick ] 小于等于 [ 0 ]
+            // 如果数据中的 [ tick ] 小于等于 [ 0 ]
             if (renderDataList[index].tick <= 0) {
 
                 // 删除数据
