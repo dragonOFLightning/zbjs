@@ -12,7 +12,7 @@
 var scriptName = 'ChangeChat';
 
 // 定义脚本版本
-var scriptVersion = '2.0.1';
+var scriptVersion = '2.0.2';
 
 // 定义脚本作者
 var scriptAuthor = ['ColdDragon'];
@@ -484,6 +484,16 @@ function TheChangeChat() {
                     'ift': 'ft',
                     'acc': 'cc',
                     'sst': 'ss',
+                    'rfi': 'rf',
+                    'erf': 'rf',
+                    'ass': 'ss',
+                    'irc': 'rc',
+                    'als': 'ls',
+                    'lse': 'ls',
+                    'oss': 'ss',
+                    'ems': 'ms',
+                    'ssh': 'ss',
+                    'arc': 'rc',
                 };
 
                 // 循环判断关键词
