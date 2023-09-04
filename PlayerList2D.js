@@ -2,7 +2,7 @@
 var scriptName = 'PlayerList2D';
 
 // 定义脚本版本
-var scriptVersion = '2.3.0';
+var scriptVersion = '2.4.1'; // 产生了分支 当前分支版本是2.4.1而不是2.4.0
 
 // 定义脚本作者
 var scriptAuthor = ['ColdDragon'];
@@ -284,6 +284,11 @@ function thePlayerList2D() {
             }
         }
 
+        var ping = mc.getNetHandler().getPlayerInfo(thePlayer.getUniqueID()).getResponseTime().toString();
+        // chat.print(ping);
+
+        var pingStack = !inGame() ? 'ping ' + ping : '';
+
         // 如果实体是自身
         if (theEntityName == mc.thePlayer.getName()) {
 
@@ -291,11 +296,11 @@ function thePlayerList2D() {
             if (thePlayer.hurtTime == 0) {
 
                 // 深蓝字体名称
-                return '§9' + theEntityName + '§f[§b ' + theEntityHealth + '§d/' + '§a' + theEntityMaxHealth + ' §f]' + theEntityStack;
+                return '§9' + theEntityName + '§f[§b ' + theEntityHealth + '§d/' + '§a' + theEntityMaxHealth + ' §f]' + theEntityStack + pingStack;
             };
 
             // 血红字体名称
-            return '§4' + theEntityName + '§f[§b ' + theEntityHealth + '§d/' + '§a' + theEntityMaxHealth + ' §f]' + theEntityStack;
+            return '§4' + theEntityName + '§f[§b ' + theEntityHealth + '§d/' + '§a' + theEntityMaxHealth + ' §f]' + theEntityStack + pingStack;
         }
 
         // 如果实体没受伤
@@ -305,15 +310,15 @@ function thePlayerList2D() {
             if (thePlayer.isInvisible()) {
 
                 // 灰色字体名称
-                return '§7' + theEntityName + '§f[§b ' + theEntityHealth + '§d/' + '§a' + theEntityMaxHealth + ' §f]' + theEntityStack;
+                return '§7' + theEntityName + '§f[§b ' + theEntityHealth + '§d/' + '§a' + theEntityMaxHealth + ' §f]' + theEntityStack + pingStack;
             };
 
             // 亮绿字体名称
-            return '§3' + theEntityName + '§f[§b ' + theEntityHealth + '§d/' + '§a' + theEntityMaxHealth + ' §f]' + theEntityStack;
+            return '§3' + theEntityName + '§f[§b ' + theEntityHealth + '§d/' + '§a' + theEntityMaxHealth + ' §f]' + theEntityStack + pingStack;
         };
 
         // 血红字体名称
-        return '§4' + theEntityName + '§f[§b ' + theEntityHealth + '§d/' + '§a' + theEntityMaxHealth + ' §f]' + theEntityStack;
+        return '§4' + theEntityName + '§f[§b ' + theEntityHealth + '§d/' + '§a' + theEntityMaxHealth + ' §f]' + theEntityStack + pingStack;
     };
 
     // 定义 [ inGame ] 用于判断是否在游戏中 Boolean
@@ -334,7 +339,7 @@ function thePlayerList2D() {
             // 如果没有计分板就不在游戏 因为游戏默认都有计分板
             return false;
         }
-    }
+    };
 }
 
 // 脚本启用时调用
