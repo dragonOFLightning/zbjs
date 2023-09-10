@@ -12,7 +12,7 @@
 var scriptName = 'ChangeChat';
 
 // 定义脚本版本
-var scriptVersion = '2.0.2';
+var scriptVersion = '2.1.0';
 
 // 定义脚本作者
 var scriptAuthor = ['ColdDragon'];
@@ -421,9 +421,9 @@ function TheChangeChat() {
             'de': 'Dead End',
             'bb': 'Bad Blood',
             'aa': 'Alien Arcadium',
-            '-r': ' Rip',
-            '-n': ' Normal',
-            '-h': ' Hard',
+            '-r': 'Rip',
+            '-n': 'Normal',
+            '-h': 'Hard',
             'ins': 'Insta Kill',
             'ult': 'Ultimate',
             'qf': 'QuickFire',
@@ -453,70 +453,22 @@ function TheChangeChat() {
         // 循环判断 replaceRules
         for (var key in replaceRules) {
 
-            // 定义 [ skip ] 用于判断是否跳过循环 默认 false @boolean
-            var skip = false;
-
             // 如果数据包中的Java字符串包含 [ key ] 属性 Java字符串才能使用contains @java.lang.String
             if (thePacket.message.contains(key)) {
 
-                // 创建包含关键词和它们对应的键的对象
-                var keywords = {
-                    'cult': 'ult',
-                    'aaa': 'aa',
-                    'nde': 'de',
-                    'ade': 'de',
-                    'dea': 'de',
-                    'igh': 'gh',
-                    'ght': 'ht',
-                    'aft': 'ft',
-                    'ucc': 'cc',
-                    'ess': 'ss',
-                    'ide': 'de',
-                    'nde': 'de',
-                    'ode': 'de',
-                    'ded': 'de',
-                    'art': 'rt',
-                    'sss': 'ss',
-                    'obb': 'bb',
-                    'der': 'de',
-                    'ewa': 'ew',
-                    'arr': 'rr',
-                    'ift': 'ft',
-                    'acc': 'cc',
-                    'sst': 'ss',
-                    'rfi': 'rf',
-                    'erf': 'rf',
-                    'ass': 'ss',
-                    'irc': 'rc',
-                    'als': 'ls',
-                    'lse': 'ls',
-                    'oss': 'ss',
-                    'ems': 'ms',
-                    'ssh': 'ss',
-                    'arc': 'rc',
-                };
+                // 获取关键词左边的字符如果undefined就' ' @string
+                var left = theMessage[theMessage.indexOf(key) - 1] || ' ';
 
-                // 循环判断关键词
-                for (var keyword in keywords) {
+                // 获取关键词右边的字符如果undefined就' ' @string
+                var right = theMessage[theMessage.indexOf(key) + key.length] || ' ';
 
-                    // 如果检测到含有关键词并且关键词含有补全的缩写
-                    if (thePacket.message.contains(keyword) && key === keywords[keyword]) {
+                // 判断是否全是空格 @string
+                var allSpace = left === ' ' && right === ' ';
 
-                        // 进行跳过关键词
-                        skip = true;
-
-                        // 退出循环
-                        break;
-                    }
-                }
-
-                // 如果要跳过关键词
-                if (skip) {
-
-                    // 跳过循环
+                // 如果不是全空格就跳过
+                if (!allSpace) {
                     continue;
                 }
-
 
                 // 全局匹配 [ key ] 替换成 [ key ] 对应的值
                 theMessage = theMessage.replace(new RegExp(key, 'g'), replaceRules[key]);
