@@ -2,7 +2,7 @@
 var scriptName = 'EventInfo';
 
 // 定义脚本版本
-var scriptVersion = '1.0.1';
+var scriptVersion = '1.0.2';
 
 // 定义脚本作者
 var scriptAuthor = ['ColdDragon'];
@@ -123,13 +123,13 @@ function TheEventInfo() {
 
                 // 拦截聊天
                 event.cancelEvent();
+            } else {
+                // 纪录聊天
+                lastChatText = chatText;
             };
 
-            // 纪录聊天
-            lastChatText = chatText;
-
             // 否则 如果检测到 [ S0BPacketAnimation ] 并且动画类型为 [ 4 ]
-        } else if (thePacket instanceof S0BPacketAnimation && thePacket.getAnimationType() == 4) {
+        } else if (thePacket instanceof S0BPacketAnimation && thePacket.getAnimationType() == 4 && settings.criticalEvent.get()) {
 
             // 将 [ '§d检测到一次近战暴击' ] 条件至渲染队列
             renderDataList.push(new RenderData('§d检测到一次近战暴击', settings.renderTime.get()));
@@ -142,6 +142,7 @@ function TheEventInfo() {
         // 此逻辑过于简单 懒得注释 仅需注意 string是一个 java.lang.String 类型
         return string.contains('Gold') && settings.renderGame.get() && isGoldChat(string) ||
             string.contains('金钱') && settings.renderGame.get() && isGoldChat(string) ||
+            string.contains(' Creepers remaining...') && settings.renderGame.get() ||
 
             string.contains('joined the lobby!') && settings.renderLobby.get() ||
             string.contains('CLICK HERE to join!') && settings.renderLobby.get() ||
