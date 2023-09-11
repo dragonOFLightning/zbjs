@@ -33,7 +33,7 @@ function TheEventInfo() {
     // 定义 [ settings ] 对象 用于设置选项 Object
     var settings = {
 
-        // 是否渲染经济
+        // 是否渲染游戏事件
         renderGame: setting.boolean('Game', true),
 
         // 是否渲染大厅事件
