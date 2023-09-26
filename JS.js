@@ -148,7 +148,45 @@ function TheJS() {
     this.onClickBlock = function (event) {
         // 获取方块的三维坐标
         event.getClickedBlock()
-    }
+    };
+
+    /**
+     * @function getDistanceDef 用于计算三维空间中2点之间的距离
+     * @param {number} x1 第一个点的 x 坐标
+     * @param {number} y1 第一个点的 y 坐标
+     * @param {number} z1 第一个点的 z 坐标
+     * @param {number} x2 第二个点的 x 坐标
+     * @param {number} y2 第二个点的 y 坐标
+     * @param {number} z2 第二个点的 z 坐标
+     * @returns {number} 欧几里平方
+     */
+    function getDistanceDef(x1, y1, z1, x2, y2, z2) {
+
+        // 计算差值
+        var x = x2 - x1;
+        var y = y2 - y1;
+        var z = z2 - z1;
+
+        // 返回平方
+        return x * x + y * y + z * z;
+    };
+
+    /**
+     * @function getVolume 用于计算三维空间中2点围成的区域体积
+     * @param {number} maxX 区域的最大 x 坐标
+     * @param {number} maxY 区域的最大 y 坐标
+     * @param {number} maxZ 区域的最大 z 坐标
+     * @param {number} minX 区域中最大 x 坐标
+     * @param {number} minY 区域中最大 y 坐标
+     * @param {number} minZ 区域中最大 z 坐标
+     * @returns {number} 体积
+     */
+    function getVolume(maxX, maxY, maxZ, minX, minY, minZ) {
+        var lengthX = maxX - minX;
+        var lengthY = maxY - minY;
+        var lengthZ = maxZ - minZ;
+        return lengthX * lengthY * lengthZ;
+    };
 }
 
 // 脚本启用时调用
