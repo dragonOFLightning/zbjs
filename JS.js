@@ -171,16 +171,16 @@ function TheJS() {
         return x * x + y * y + z * z;
     };
 
-    /**
-     * @function getVolume 用于计算三维空间中2点围成的区域体积
-     * @param {number} maxX 区域的最大 x 坐标
-     * @param {number} maxY 区域的最大 y 坐标
-     * @param {number} maxZ 区域的最大 z 坐标
-     * @param {number} minX 区域中最大 x 坐标
-     * @param {number} minY 区域中最大 y 坐标
-     * @param {number} minZ 区域中最大 z 坐标
-     * @returns {number} 体积
-     */
+    /**                                                                                                                                                                                                                                                             
+     * @function getVolume 用于计算三维空间中2点围成的区域体积                                                                                                                                                                                                                                                          
+     * @param {number} maxX 区域的最大 x 坐标                                                                                                                                                                                                                                                           
+     * @param {number} maxY 区域的最大 y 坐标                                                                                                                                                                                                                                                           
+     * @param {number} maxZ 区域的最大 z 坐标                                                                                                                                                                                                                                                           
+     * @param {number} minX 区域中最大 x 坐标                                                                                                                                                                                                                                                           
+     * @param {number} minY 区域中最大 y 坐标                                                                                                                                                                                                                                                           
+     * @param {number} minZ 区域中最大 z 坐标                                                                                                                                                                                                                                                           
+     * @returns {number} 体积                                                                                                                                                                                                                                                           
+     */                                                                                                                                                                                                                                                             
     function getVolume(maxX, maxY, maxZ, minX, minY, minZ) {
         var lengthX = maxX - minX;
         var lengthY = maxY - minY;

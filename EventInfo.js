@@ -2,7 +2,7 @@
 var scriptName = 'EventInfo';
 
 // 定义脚本版本
-var scriptVersion = '1.0.2';
+var scriptVersion = '1.1.0';
 
 // 定义脚本作者
 var scriptAuthor = ['ColdDragon'];
@@ -12,6 +12,9 @@ var S02PacketChat = Java.type('net.minecraft.network.play.server.S02PacketChat')
 
 // 引入动画数据包 [ S0BPacketAnimation ]
 var S0BPacketAnimation = Java.type('net.minecraft.network.play.server.S0BPacketAnimation');
+
+// 引入玩家类 [ EntityPlayer ]
+var EntityPlayer = Java.type('net.minecraft.entity.player.EntityPlayer');
 
 // 定义模块的构造函数
 function TheEventInfo() {
@@ -42,6 +45,9 @@ function TheEventInfo() {
         // 是否渲染玩家聊天事件
         renderPlayer: setting.boolean('Player', true),
 
+        // 是否渲染切换器械事件
+        renderChange: setting.boolean('Change', false),
+
         // 是否渲染刀械暴击事件
         criticalEvent: setting.boolean('Critical', true),
 
@@ -54,6 +60,45 @@ function TheEventInfo() {
         // 设定渲染位置 
         theDrawStringX: setting.integer('Render2DX', 500, 0, 900),
         theDrawStringY: setting.integer('Render2DY', 230, 0, 900),
+    };
+
+    /**
+     * @Map 这是一个武器的映射
+     * @onlyRead 只读映射
+     */
+    var WeaponMap = {
+
+        // 未本地化的名称
+        theUnlocalizedName: ['item.hoeWood', 'item.hoeIron', 'item.shovelIron',
+            'item.hoeGold', 'item.pickaxeGold', 'item.pickaxeDiamond',
+            'item.shovelGold', 'item.hoeStone', 'item.hoeDiamond',
+            'item.shovelWood', 'item.shears', 'item.flintAndSteel'
+        ],
+
+        // 武器的名称
+        theWeaponName: ['Pistol', 'Shotgun', 'Blow Dart',
+            'Flamethrower', 'Gold Digger', 'Zombie Zapper',
+            'Rainbow Rifle', 'Rifle', 'Zombie Soaker',
+            'Sniper', 'Elder Gun', 'Double Barrel Shotgun'
+        ],
+
+        // 是否是远程武器
+        isRemote: [true, false, true, true, true, true, true, true, true, true, true, false],
+
+        // 是否是缺子弹的武器
+        isLowAmmo: [false, false, false, false, false, false, true, false, false, true, false, false],
+
+        /**
+         * @function isEconomy 判断武器是否能经济战术
+         * @param {integer} index 映射索引
+         * @param {boolean} isUltimate 是否已经升级
+         * @returns {boolean}
+         */
+        isEconomy: function (index, isUltimate) {
+            var isUltimateGoldDigger = this.theWeaponName[index] === 'Gold Digger' && isUltimate;
+            var canEconomy = [true, true, true, true, true, false, false, false, false, false, false, false];
+            return isUltimateGoldDigger ? false : canEconomy[index];
+        }
     };
 
     // 定义模块选项
@@ -81,6 +126,13 @@ function TheEventInfo() {
     // 定义 [ renderDataList ] 用于存储渲染数据的列表 Array<RenderData>
     var renderDataList = [];
 
+    /**@type {Array<ChangeData>} 用于存储切换数据的列表*/
+    var changeDataList = [];
+
+    this.onEnable = function () {
+        changeDataList = [];
+    };
+
     // 模块更新时调用
     this.onUpdate = function () {
 
@@ -91,6 +143,95 @@ function TheEventInfo() {
             renderDataList.splice(0, 1)
         }
 
+        // 如果启用了 渲染切换器械事件
+        if (settings.renderChange.get()) {
+
+            // 获取玩家的列表
+            var playerList = getPlayerList();
+
+            // 循环列表
+            for (var index = 0; index < playerList.length; index++) {
+
+                /**@type {EntityPlayer} 获取玩家*/
+                var thePlayer = playerList[index];
+
+                try {
+
+                    /**@type {net.minecraft.item.ItemStack} 获取物品栈*/
+                    var itemStack = thePlayer.getHeldItem();
+
+                    /**@type {java.lang.String} 获取物品的名称*/
+                    var itemName = itemStack.getItem().getUnlocalizedName();
+
+                    /**@type {integer} 获取物品未本地化名称对应的字典索引*/
+                    var mapIndex = WeaponMap.theUnlocalizedName.indexOf(itemName);
+
+                    // 没拿武器就跳过
+                    if (mapIndex === -1) {
+                        continue;
+                    }
+
+                    /**@type {boolean} 获取物品的是否附魔了*/
+                    var isUltimate = itemStack.isItemEnchanted();
+
+                    /**@type {java.lang.String} 获取实体的名称*/
+                    var name = thePlayer.getName();
+
+                    /**@type {integer} 切换数据的索引*/
+                    var changeDataIndex = -1;
+
+                    /**@type {boolean} 是否再次循环*/
+                    var reFor = false;
+
+                    // 循环获取索引
+                    for (var slot = 0; slot < changeDataList.length; slot++) {
+                        if (changeDataList[slot].playerName === name) {
+                            changeDataIndex = slot;
+                        }
+                    };
+
+                    // 如果没获取到索引 就设置为再次循环
+                    reFor = changeDataIndex < 0;
+
+                    // 如果没获取到索引 就添加一个切换数据到切换数据集合中
+                    changeDataIndex < 0 ? changeDataList.push(new ChangeData(name, itemName, 0)) : null;
+
+                    // 如果需要再次循环
+                    if (reFor) {
+
+                        // 循环获取索引
+                        for (var index = 0; index < changeDataList.length; index++) {
+                            if (changeDataList[index].playerName === name) {
+                                changeDataIndex = index;
+                            }
+                        };
+                    }
+
+                    /**@type {java.lang.String} 获取物品本地化名称*/
+                    var weaponName = itemStack.getDisplayName();
+
+                    /**@type {java.lang.String} 获取上一次切换的物品名称*/
+                    var lastItem = changeDataList[changeDataIndex].lastItemName;
+
+                    // 如果物品不支持经济战术
+                    if (!WeaponMap.isEconomy(mapIndex, isUltimate) && itemName !== lastItem) {
+
+                        // 切换次数自增
+                        changeDataList[changeDataIndex].count = changeDataList[changeDataIndex].count + 1;
+
+                        // 获取切换的次数
+                        var count = changeDataList[changeDataIndex].count;
+
+                        // 添加渲染事件
+                        renderDataList.push(new RenderData(name + '切换了' + weaponName + ' 纪录次数' + count, settings.renderTime.get() + 200));
+                    }
+
+                    // 更新上一次切换的物品名称
+                    changeDataList[changeDataIndex].lastItemName = itemName;
+
+                } catch (error) {};
+            }
+        }
     };
 
     // 定义全局变量 [lastChatText] 用于存储上一个文本 @java.lang.string
@@ -104,6 +245,16 @@ function TheEventInfo() {
 
         // 如果包的类型是 [ S02PacketChat ]
         if (thePacket instanceof S02PacketChat) {
+
+            if (thePacket.getChatComponent().getUnformattedText().contains('EI-NO 3rd')) {
+                settings.renderChange.set(true);
+                return;
+            }
+
+            if (thePacket.getChatComponent().getUnformattedText().contains('EI-3rd')) {
+                settings.renderChange.set(false);
+                return;
+            }
 
             // 定义 [chatText] 用于存储文本 @java.lang.String
             var chatText;
@@ -135,6 +286,28 @@ function TheEventInfo() {
             renderDataList.push(new RenderData('§d检测到一次近战暴击', settings.renderTime.get()));
         }
     };
+
+    // 定义模块渲染2D
+    this.onRender2D = function () {
+
+        // 遍历 [ renderDataList ] 中的每个 数据对象
+        for (var index = 0; index < renderDataList.length; index++) {
+
+            // 渲染数据的 [ string ] 
+            mc.fontRendererObj.drawString(renderDataList[index].string, settings.theDrawStringX.get(), settings.theDrawStringY.get() + 10 * index, 0xffffff, true);
+
+            // 数据中的 [ tick ] 自减
+            renderDataList[index].tick--;
+
+            // 如果数据中的 [ tick ] 小于等于 [ 0 ]
+            if (renderDataList[index].tick <= 0) {
+
+                // 删除数据
+                renderDataList.splice(index, 1);
+            }
+        }
+    };
+
 
     // 定义 [ isRenderChat ] 用于判断是否符合渲染条件 Boolean
     function isRenderChat(string) {
@@ -180,26 +353,48 @@ function TheEventInfo() {
         return false;
     };
 
-    // 定义模块渲染2D
-    this.onRender2D = function () {
 
-        // 遍历 [ renderDataList ] 中的每个 数据对象
-        for (var index = 0; index < renderDataList.length; index++) {
+    /**
+     * @function getPlayerList 用于获取玩家的列表
+     * @returns @type {Array<EntityPlayer>}
+     */
+    function getPlayerList() {
 
-            // 渲染数据的 [ string ] 
-            mc.fontRendererObj.drawString(renderDataList[index].string, settings.theDrawStringX.get(), settings.theDrawStringY.get() + 9 * index, 0xffffff);
+        /**@type {Array<EntityPlayer>} 玩家的列表*/
+        var playerList = [];
 
-            // 数据中的 [ tick ] 自减
-            renderDataList[index].tick--;
+        // 获取世界上全部的实体
+        var worldEntity = mc.theWorld.loadedEntityList;
 
-            // 如果数据中的 [ tick ] 小于等于 [ 0 ]
-            if (renderDataList[index].tick <= 0) {
+        // 循环
+        for (var i in worldEntity) {
 
-                // 删除数据
-                renderDataList.splice(index, 1);
+            /**@type {Entity} 获取实体*/
+            var theEntity = worldEntity[i];
+
+            // 如果实体是实体玩家并且没有隐身
+            if (theEntity instanceof EntityPlayer && !theEntity.isInvisible()) {
+
+                // 添加到玩家列表中
+                playerList.push(theEntity);
             }
         }
-    };
+
+        // 返回玩家的列表
+        return playerList;
+    }
+
+    /**
+     * @class 切换数据类
+     * @param {java.lang.String} playerName 纪录该玩家的名称
+     * @param {java.lang.String} lastItemName 纪录该玩家上一次切换的物品名称
+     * @param {java.lang.String} count 纪录该玩家切换了多少次
+     */
+    function ChangeData(playerName, lastItemName, count) {
+        this.playerName = playerName;
+        this.lastItemName = lastItemName;
+        this.count = count;
+    }
 
     // 定义渲染数据的构造函数
     function RenderData(text, time) {
