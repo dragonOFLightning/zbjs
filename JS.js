@@ -134,7 +134,7 @@ function TheJS() {
 
     /**
      * @override 模块渲染2D时调用
-     * @param {net.ccbluex.liquidbounce.event.Render2DEvent} event 渲染2D事件
+     * @param {net.ccbluex.liquidbounce.event.Render2DEvent} event 渲染2D事件 这个event暂时不知道咋用
      */
     this.onRender2D = function (event) {
         // 在屏幕上渲染带阴影的文本
@@ -143,7 +143,7 @@ function TheJS() {
 
     /**
      * @override 模块渲染3D时调用
-     * @param {net.ccbluex.liquidbounce.event.Render3DEvent} event 渲染3D事件
+     * @param {net.ccbluex.liquidbounce.event.Render3DEvent} event 渲染3D事件 这个event暂时不知道咋用
      */
     this.onRender3D = function (event) {
         // 在特定坐标渲染文本
