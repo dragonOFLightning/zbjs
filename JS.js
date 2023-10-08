@@ -1,3 +1,9 @@
+/*
+    这是一个LiquidBounce的JavaScript脚本的模板
+    正在持续更新 当前更新日期 UTC+8 2023-10-8
+    原版教程在 github.com/CCBlueX/LiquidScript
+*/
+
 // 定义脚本名称
 var scriptName = 'JS';
 
@@ -7,32 +13,33 @@ var scriptVersion = '1.0.0';
 // 定义脚本作者
 var scriptAuthor = ['ColdDragon'];
 
-// 引入本地聊天数据包 [ C01PacketChatMessage ]
+// ######## - net.minecraft.network - ########
+/**@type {net.minecraft.network.play.client.C01PacketChatMessage'} 引入客户端聊天数据包类型*/
 var C01PacketChatMessage = Java.type('net.minecraft.network.play.client.C01PacketChatMessage');
 
-// 引入网络聊天数据包 [ S02PacketChat ]
-var S02PacketChat = Java.type('net.minecraft.network.play.server.S02PacketChat');
-
-// 引入世界时间数据包 [ S03PacketTimeUpdate ]
+/**@type {net.minecraft.network.play.server.S03PacketTimeUpdate} 引入世界时间数据包类型*/
 var S03PacketTimeUpdate = Java.type('net.minecraft.network.play.server.S03PacketTimeUpdate');
 
-// 引入渲染工具 [ RenderUtils ]
-var RenderUtils = Java.type('net.ccbluex.liquidbounce.utils.render.RenderUtils');
-
-// 引入BlockPos对象 用于存储三维坐标
-var BlockPos = Java.type('net.minecraft.util.BlockPos');
-
-// 引入动画数据包 [ S0BPacketAnimation ]
+/**@type {net.minecraft.network.play.server.S0BPacketAnimation} 引入动画数据包类型*/
 var S0BPacketAnimation = Java.type('net.minecraft.network.play.server.S0BPacketAnimation');
 
-// 引入 LiquidBounce 可单纯用于关闭模块
-var LiquidBounce = Java.type('net.ccbluex.liquidbounce.LiquidBounce');
+/**@type {net.minecraft.network.play.server.S02PacketChat} 引入服务器聊天数据包类型*/
+var S02PacketChat = Java.type('net.minecraft.network.play.server.S02PacketChat');
 
-// 引入颜色对象 [ Color ]
-var Color = Java.type('java.awt.Color');
-
-// 引入容器对象 [ AxisAlignedBB ]
+// ######## - net.minecraft.util - ########
+/**@type {net.minecraft.util.AxisAlignedBB} 引入容器类型*/
 var AxisAlignedBB = Java.type('net.minecraft.util.AxisAlignedBB');
+
+/**@type {net.minecraft.util.BlockPos} 引入方块坐标数据类型*/
+var BlockPos = Java.type('net.minecraft.util.BlockPos');
+
+// ######## - net.ccbluex - ########
+/**@type {net.ccbluex.liquidbounce.utils.render.RenderUtils} 引入渲染工具*/
+var RenderUtils = Java.type('net.ccbluex.liquidbounce.utils.render.RenderUtils');
+
+// ######## - java - ########
+/**@type {java.awt.Color} 引入颜色类型*/
+var Color = Java.type('java.awt.Color');
 
 // 定义模块的构造函数
 function TheJS() {
@@ -81,70 +88,90 @@ function TheJS() {
         神龙站在哪个方块: setting.text('神龙站在哪个方块上', '基岩')
     };
 
-    // 定义模块选项
+    /**@override 定义模块选项 */
     this.addValues = function (values) {
         for (var i in settings) {
             values.add(settings[i])
         }
     };
 
-    // 定义模块名称
+    /**@override 定义模块名称 */
     this.getName = function () {
         return 'JS'
     };
 
-    // 定义模块描述
+    /**@override 定义模块描述 */
     this.getDescription = function () {
         return 'ColdDragon'
     };
 
-    // 定义模块归类
+    /**@override 定义模块归类 */
     this.getCategory = function () {
         return 'Fun'
     };
 
-    // 模块启用时调用
+    /**@override 模块启用时调用 */
     this.onEnable = function () {};
 
-    // 模块更新时调用
+    /**@override 每一tick更新时调用 */
     this.onUpdate = function () {};
 
-    // 模块禁用时调用
+    /**@override 模块禁用时调用 */
     this.onDisable = function () {};
 
-    // 模块检测到数据包时调用
+    /**
+     * @override 模块检测到数据包时调用 
+     * @param {net.ccbluex.liquidbounce.event.PacketEvent} event 数据包事件
+     */
     this.onPacket = function (event) {
+
         // 获取包
         var thePacket = event.getPacket();
-        // 如果包的类型是..
-        if (thePacket /*instanceof packetName*/ ) {}
+
+        // 如果数据包 的类型是 C01PacketChatMessage
+        if (thePacket instanceof C01PacketChatMessage) {}
     };
 
-    // 定义模块渲染2D
-    this.onRender2D = function () {
-        // 在屏幕上渲染文本
-        mc.fontRendererObj.drawString('神龙啊啊啊', 9, 450, 0x8B0000);
+    /**
+     * @override 模块渲染2D时调用
+     * @param {net.ccbluex.liquidbounce.event.Render2DEvent} event 渲染2D事件
+     */
+    this.onRender2D = function (event) {
+        // 在屏幕上渲染带阴影的文本
+        mc.fontRendererObj.drawString('神龙啊啊啊', 9, 450, 0x8B0000, true);
     };
 
-    // 定义模块渲染3D
-    this.onRender3D = function () {
+    /**
+     * @override 模块渲染3D时调用
+     * @param {net.ccbluex.liquidbounce.event.Render3DEvent} event 渲染3D事件
+     */
+    this.onRender3D = function (event) {
         // 在特定坐标渲染文本
         RenderUtils.renderNameTag('三维坐标', 1, 1, 1);
     };
 
-    // 攻击实体时调用
+    /**
+     * @override 攻击时调用
+     * @param {net.ccbluex.liquidbounce.event.AttackEvent} event 攻击事件
+     */
     this.onAttack = function (event) {
         // 获取攻击的实体
         event.getTargetEntity();
     };
 
-    // 按下键盘时调用
+    /**
+     * @override 按下键盘的特定键时调用
+     * @param {net.ccbluex.liquidbounce.event.KeyEvent} event 按键事件
+     */
     this.onKey = function (event) {
         // 获取按键ID
         event.getKey();
     };
 
-    // 点击方块时调用
+    /**
+     * @override 点击方块时调用
+     * @param {net.ccbluex.liquidbounce.event.ClickBlockEvent} event 点击方块事件
+     */
     this.onClickBlock = function (event) {
         // 获取方块的三维坐标
         event.getClickedBlock()
@@ -180,7 +207,7 @@ function TheJS() {
      * @param {number} minY 区域中最大 y 坐标                                                                                                                                                                                                                                                           
      * @param {number} minZ 区域中最大 z 坐标                                                                                                                                                                                                                                                           
      * @returns {number} 体积                                                                                                                                                                                                                                                           
-     */                                                                                                                                                                                                                                                             
+     */
     function getVolume(maxX, maxY, maxZ, minX, minY, minZ) {
         var lengthX = maxX - minX;
         var lengthY = maxY - minY;
