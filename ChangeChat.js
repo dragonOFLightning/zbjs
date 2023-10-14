@@ -4,6 +4,8 @@
         - 可用于补全缩写
         - 可用于拦截不良信息
         - 可使用cd-s-执行刷屏命令
+        - 可扩展 各个执行函数独立运行
+        - 当前更新的时间 UTC + 8 2023-10-14
 
     此脚本为重制版 更加模块化 添加更多功能 类型更清晰 移除无用功能
 */
@@ -12,7 +14,7 @@
 var scriptName = 'ChangeChat';
 
 // 定义脚本版本
-var scriptVersion = '2.1.0';
+var scriptVersion = '2.1.1';
 
 // 定义脚本作者
 var scriptAuthor = ['ColdDragon'];
@@ -84,6 +86,9 @@ function TheChangeChat() {
 
         // 定义布尔型选项 [ ChatCompletion ] 意为 是否自动补全聊天
         chatCompletion: setting.boolean('ChatCompletion', true),
+
+        // 定义布尔型选项 [ SendTool ] 意为 是否发送工具
+        sendTool: setting.boolean('SendTool', true),
     };
 
     // 定义模块选项
@@ -270,11 +275,131 @@ function TheChangeChat() {
             alreadySendLag = false;
 
             // 如果包的类型是 [ C01PacketChatMessage ] 并且开启了聊天补全
-        } else if (thePacket instanceof C01PacketChatMessage && settings.chatCompletion.get()) {
+        } else if (thePacket instanceof C01PacketChatMessage) {
 
-            // 执行聊天补全
-            doChatCompletion(thePacket);
-        }
+            if (settings.chatCompletion.get()) {
+                // 执行聊天补全
+                doChatCompletion(thePacket);
+            };
+
+            if (settings.sendTool.get()) {
+                // 判断是否已经发送工具
+                alreadySendTool(thePacket) ? event.cancelEvent() : null;
+            };
+        };
+    };
+
+    /**
+     * @function alreadySendTool 用判断是否已经发送了工具
+     * @param {C01PacketChatMessage} packet 
+     * @returns {boolean} 判断是否已经发送工具
+     */
+    function alreadySendTool(packet) {
+
+        // 如果同时检测到 do-sw 和 do-sp
+        if (packet.message.contains('do-sw') && packet.message.contains('do-sp')) {
+
+            // 执行发送增益和发送武器
+            doSendPerks();
+            doSendWeapons();
+            return true;
+        };
+
+        // 如果检测到 do-sw
+        if (packet.message.contains('do-sw')) {
+            doSendWeapons();
+            return true;
+        };
+
+        // 如果检测到 do-sp
+        if (packet.message.contains('do-sp')) {
+            doSendPerks();
+            return true;
+        };
+    };
+
+    /**
+     * @function doSendPerks 用于执行发送增益
+     * @returns {void} 发送增益
+     */
+    function doSendPerks() {
+
+        // 增益映射
+        var perksList = [
+            'item.dyePowder',
+            'item.goldNugget',
+            'item.sugar',
+            'item.ghastTear',
+            'item.cookie',
+            'item.redstone',
+            'item.blazePowder',
+        ];
+
+        // 遍历快捷栏
+        for (var slot = 4; slot < 9; slot++) {
+
+            // 获取物品栈
+            var itemStack = mc.thePlayer.inventory.getStackInSlot(slot);
+            if (itemStack) {
+
+                /**@type {java.lang.String} 获取物品未本地化的名称 */
+                var nameUZ = itemStack.getItem().getUnlocalizedName();
+
+                /**@type {java.lang.String} 获取物品本地化的名称 */
+                var name = itemStack.getDisplayName();
+
+                // 如果这个物品包含在映射中
+                if (perksList.indexOf(nameUZ) !== -1) {
+
+                    // 执行发送
+                    mc.thePlayer.sendChatMessage(name);
+                };
+            };
+        };
+    };
+
+    /**
+     * @function doSendWeapons 执行发送武器 
+     * @returns {void} 发送武器
+     */
+    function doSendWeapons() {
+
+        // 存储武器的列表
+        var weaponList = [];
+
+        // 反向遍历快捷栏
+        for (var slot = 8; slot > -1; slot--) {
+
+            // 获取物品栈
+            var itemStack = mc.thePlayer.inventory.getStackInSlot(slot);
+
+            // 如果物品栈不为空
+            if (itemStack) {
+
+                /**@type {java.lang.String} 获取物品最大耐久度*/
+                var maxDurability = itemStack.getMaxDamage();
+
+                /**@type {java.lang.String} 获取物品本地化的名称*/
+                var name = itemStack.getDisplayName();
+
+                // 如果最大耐久大于2 并且名称没重复
+                if (maxDurability > 2 && weaponList.indexOf(name) === -1) {
+
+                    // 添加 字符串 到武器的列表中
+                    weaponList.push(name + ' from slot - ' + slot);
+                };
+            };
+        };
+
+        // 反转武器的列表
+        weaponList.reverse();
+
+        // 遍历武器的列表
+        for (var index = 0; index < weaponList.length; index++) {
+
+            // 执行发送武器
+            mc.thePlayer.sendChatMessage(weaponList[index]);
+        };
     };
 
     // 定义 [ doSpammerComm ] (java.lang.String text) 用于执行命令刷屏 @void
@@ -315,9 +440,9 @@ function TheChangeChat() {
             for (var i = 1; i <= count; i++) {
                 // 发送 [ text ]
                 mc.thePlayer.sendChatMessage(text);
-            }
-        }
-    }
+            };
+        };
+    };
 
     // 定义 [ doJoinParty ] (java.lang.String inviteText) 用于执行进入组队 @void
     function doJoinParty(inviteText) {
@@ -346,7 +471,7 @@ function TheChangeChat() {
 
         // 发送命令/party accept <玩家名字>
         mc.thePlayer.sendChatMessage('/party accept ' + theName);
-    }
+    };
 
     // 定义 [ isBadChat ] (java.lang.String text) 用于判断字符串是否包含垃圾内容 @boolean
     function isBadChat(text) {
@@ -385,8 +510,8 @@ function TheChangeChat() {
                 // 判断是否包含 Loser @boolean
                 var includesLoser = string.toLowerCase().indexOf('loser') !== -1;
                 return allL || includesSelf || includesLoser;
-            }
-        }
+            };
+        };
     };
 
     // 定义 [ doChatCompletion ] ([ C01PacketChatMessage ] thePacket) 用于执行聊天补全 @void
@@ -467,7 +592,9 @@ function TheChangeChat() {
 
                 // 如果不是全空格就跳过
                 if (!allSpace) {
-                    continue;
+                    if (/[a-z]/gi.test(left) || /[a-z]/gi.test(right)) {
+                        continue;
+                    }
                 }
 
                 // 全局匹配 [ key ] 替换成 [ key ] 对应的值
@@ -475,8 +602,8 @@ function TheChangeChat() {
 
                 // 更新数据包的message
                 thePacket.message = theMessage;
-            }
-        }
+            };
+        };
     };
 }
 
