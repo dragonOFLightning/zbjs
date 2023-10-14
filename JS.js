@@ -1,6 +1,6 @@
 /*
     这是一个LiquidBounce的JavaScript脚本的模板
-    正在持续更新 当前更新日期 UTC+8 2023-10-8
+    正在持续更新 当前更新日期 UTC+8 2023-10-14
     原版教程在 github.com/CCBlueX/LiquidScript
 */
 
@@ -13,18 +13,38 @@ var scriptVersion = '1.0.0';
 // 定义脚本作者
 var scriptAuthor = ['ColdDragon'];
 
-// ######## - net.minecraft.network - ########
+// ######## - net.minecraft.network - ########\\
+/**@type {net.minecraft.network.play.client.C08PacketPlayerBlockPlacement} 引入客户端放置数据包类型*/
+var C08PacketPlayerBlockPlacement = Java.type('net.minecraft.network.play.client.C08PacketPlayerBlockPlacement');
+
+/**@type {net.minecraft.network.play.client.C07PacketPlayerDigging} 引入客户端挖掘数据包类型*/
+var C07PacketPlayerDigging = Java.type('net.minecraft.network.play.client.C07PacketPlayerDigging');
+
 /**@type {net.minecraft.network.play.client.C01PacketChatMessage'} 引入客户端聊天数据包类型*/
 var C01PacketChatMessage = Java.type('net.minecraft.network.play.client.C01PacketChatMessage');
 
 /**@type {net.minecraft.network.play.server.S03PacketTimeUpdate} 引入世界时间数据包类型*/
 var S03PacketTimeUpdate = Java.type('net.minecraft.network.play.server.S03PacketTimeUpdate');
 
+/**@type {net.minecraft.network.play.client.C02PacketUseEntity} 引入客户端与实体互动数据包类型*/
+var C02PacketUseEntity = java.type('net.minecraft.network.play.client.C02PacketUseEntity');
+
 /**@type {net.minecraft.network.play.server.S0BPacketAnimation} 引入动画数据包类型*/
 var S0BPacketAnimation = Java.type('net.minecraft.network.play.server.S0BPacketAnimation');
 
 /**@type {net.minecraft.network.play.server.S02PacketChat} 引入服务器聊天数据包类型*/
 var S02PacketChat = Java.type('net.minecraft.network.play.server.S02PacketChat');
+
+// ######## - net.minecraft.entity - #########
+/**@type {net.minecraft.entity.item.EntityArmorStand} 引入实体盔甲架类型*/
+var EntityArmorStand = Java.type('net.minecraft.entity.item.EntityArmorStand');
+
+/**@type {net.minecraft.entity.player.EntityPlayer} 引入实体玩家*/
+var EntityPlayer = Java.type('net.minecraft.entity.player.EntityPlayer');
+
+// ######## - net.minecraft.item - ########
+/**@type {net.minecraft.item} 引入物品剑*/
+var ItemSword = Java.type('net.minecraft.item.ItemSword');
 
 // ######## - net.minecraft.util - ########
 /**@type {net.minecraft.util.AxisAlignedBB} 引入容器类型*/
@@ -76,7 +96,7 @@ function TheJS() {
         block: function (name, def) {
             return value.createBlock(name, def);
         }
-    }
+    };
 
     // 定义 [ settings ] 对象 用于设置选项
     var settings = {
