@@ -1,6 +1,6 @@
 /*
     这是一个LiquidBounce的JavaScript脚本的模板
-    正在持续更新 当前更新日期 UTC+8 2023-10-14
+    正在持续更新 当前更新日期 UTC+8 2023-10-29
     原版教程在 github.com/CCBlueX/LiquidScript
 */
 
@@ -25,9 +25,6 @@ var C01PacketChatMessage = Java.type('net.minecraft.network.play.client.C01Packe
 
 /**@type {net.minecraft.network.play.server.S03PacketTimeUpdate} 引入世界时间数据包类型*/
 var S03PacketTimeUpdate = Java.type('net.minecraft.network.play.server.S03PacketTimeUpdate');
-
-/**@type {net.minecraft.network.play.client.C02PacketUseEntity} 引入客户端与实体互动数据包类型*/
-var C02PacketUseEntity = java.type('net.minecraft.network.play.client.C02PacketUseEntity');
 
 /**@type {net.minecraft.network.play.server.S0BPacketAnimation} 引入动画数据包类型*/
 var S0BPacketAnimation = Java.type('net.minecraft.network.play.server.S0BPacketAnimation');
