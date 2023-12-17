@@ -1,6 +1,6 @@
 /*
     这是一个LiquidBounce的JavaScript脚本的模板
-    正在持续更新 当前更新日期 UTC+8 2023-10-29
+    正在持续更新 当前更新日期 UTC+8 2023-12-17
     原版教程在 github.com/CCBlueX/LiquidScript
 */
 
@@ -13,7 +13,7 @@ var scriptVersion = '1.0.0';
 // 定义脚本作者
 var scriptAuthor = ['ColdDragon'];
 
-// ######## - net.minecraft.network - ########\\
+// ######## - net.minecraft.network.play.client - ########
 /**@type {net.minecraft.network.play.client.C08PacketPlayerBlockPlacement} 引入客户端放置数据包类型*/
 var C08PacketPlayerBlockPlacement = Java.type('net.minecraft.network.play.client.C08PacketPlayerBlockPlacement');
 
@@ -23,6 +23,7 @@ var C07PacketPlayerDigging = Java.type('net.minecraft.network.play.client.C07Pac
 /**@type {net.minecraft.network.play.client.C01PacketChatMessage'} 引入客户端聊天数据包类型*/
 var C01PacketChatMessage = Java.type('net.minecraft.network.play.client.C01PacketChatMessage');
 
+// ######## - net.minecraft.network.play.server - ########
 /**@type {net.minecraft.network.play.server.S03PacketTimeUpdate} 引入世界时间数据包类型*/
 var S03PacketTimeUpdate = Java.type('net.minecraft.network.play.server.S03PacketTimeUpdate');
 
@@ -32,7 +33,10 @@ var S0BPacketAnimation = Java.type('net.minecraft.network.play.server.S0BPacketA
 /**@type {net.minecraft.network.play.server.S02PacketChat} 引入服务器聊天数据包类型*/
 var S02PacketChat = Java.type('net.minecraft.network.play.server.S02PacketChat');
 
-// ######## - net.minecraft.entity - #########
+/**@type {net.minecraft.network.play.server.S45PacketTitle} 引入服务器标题数据包类型*/
+var S45PacketTitle = Java.type('net.minecraft.network.play.server.S45PacketTitle');
+
+// ######## - net.minecraft.entity - ########
 /**@type {net.minecraft.entity.item.EntityArmorStand} 引入实体盔甲架类型*/
 var EntityArmorStand = Java.type('net.minecraft.entity.item.EntityArmorStand');
 
@@ -47,6 +51,9 @@ var ItemSword = Java.type('net.minecraft.item.ItemSword');
 /**@type {net.minecraft.util.AxisAlignedBB} 引入容器类型*/
 var AxisAlignedBB = Java.type('net.minecraft.util.AxisAlignedBB');
 
+/**@type {net.minecraft.util.EnumFacing} 引入方块朝向枚举类*/
+var EnumFacing = Java.type('net.minecraft.util.EnumFacing');
+
 /**@type {net.minecraft.util.BlockPos} 引入方块坐标数据类型*/
 var BlockPos = Java.type('net.minecraft.util.BlockPos');
 
@@ -57,6 +64,12 @@ var RenderUtils = Java.type('net.ccbluex.liquidbounce.utils.render.RenderUtils')
 // ######## - java - ########
 /**@type {java.awt.Color} 引入颜色类型*/
 var Color = Java.type('java.awt.Color');
+
+/**@type {java.util.Timer} 引入计时器类型*/
+var Timer = Java.type('java.util.Timer');
+
+/**@type {java.util.TimerTask} 引入抽象计时器类型*/
+var TimerTask = Java.type('java.util.TimerTask');
 
 // 定义模块的构造函数
 function TheJS() {
@@ -97,12 +110,12 @@ function TheJS() {
 
     // 定义 [ settings ] 对象 用于设置选项
     var settings = {
-        神龙死于多少: setting.integer('神龙死于多少', 101, 1, 105),
-        神龙会不会通关单刷啊啊: setting.boolean('神龙会不会通关单刷啊啊', false),
-        神龙爆压苏北辞的概率: setting.float('神龙爆压苏北辞的概率', 0.4, 0.1, 1),
-        神龙的选择怎么打: setting.list('神龙选择怎么打', ['2+2', '3+1', 'cc 0d'], '2+2'),
-        神龙站在哪个方块: setting.block('神龙站在哪个方块上', 0),
-        神龙站在哪个方块: setting.text('神龙站在哪个方块上', '基岩')
+        round: setting.integer('round', 101, 1, 105),
+        true: setting.boolean('true', false),
+        $100: setting.float('$100%', 0.4, 0.1, 1),
+        simple: setting.list('simple', ['2+2', '3+1', 'cc 0d'], '2+2'),
+        number: setting.block('number', 0),
+        text: setting.text('text', '基岩')
     };
 
     /**@override 定义模块选项 */
@@ -128,13 +141,13 @@ function TheJS() {
     };
 
     /**@override 模块启用时调用 */
-    this.onEnable = function () {};
+    this.onEnable = function () { };
 
     /**@override 每一tick更新时调用 */
-    this.onUpdate = function () {};
+    this.onUpdate = function () { };
 
     /**@override 模块禁用时调用 */
-    this.onDisable = function () {};
+    this.onDisable = function () { };
 
     /**
      * @override 模块检测到数据包时调用 
@@ -146,7 +159,7 @@ function TheJS() {
         var thePacket = event.getPacket();
 
         // 如果数据包 的类型是 C01PacketChatMessage
-        if (thePacket instanceof C01PacketChatMessage) {}
+        if (thePacket instanceof C01PacketChatMessage) { }
     };
 
     /**
@@ -213,6 +226,32 @@ function TheJS() {
 
         // 返回平方
         return x * x + y * y + z * z;
+    };
+
+    /**
+     * @function inGame 用于判断是否在游戏中
+     * @returns {Boolean} 是否在游戏中
+     */
+    function inGame() {
+
+        // 尝试调用
+        try {
+
+            // 获取计分板名称 java.lang.String
+            var name = mc.theWorld.getScoreboard().getScores()[0].getObjective().getName();
+
+            // 判断name是否包含以下的字符串
+            return name === 'PreScoreboard' || name === 'health' || name === 'health_tab' || name === 'ZScoreboard';
+
+
+        } catch (error) {
+
+            /**
+             * 报错就返回 false
+             * 如果没有计分板就不在游戏 因为游戏默认都有计分板
+             */
+            return false;
+        }
     };
 
     /**                                                                                                                                                                                                                                                             
