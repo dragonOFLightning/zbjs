@@ -325,6 +325,8 @@ function TheEventInfo() {
             string.contains('Mystery Box!') && settings.renderLobby.get() ||
             string.contains('You must wait another') && settings.renderLobby.get() ||
             string.contains('在使用这个之前，你需要等待') && settings.renderLobby.get() ||
+            string.contains('slid into the lobby!') && settings.renderLobby.get() ||
+            string.contains('spooked into the lobby!') && settings.renderLobby.get() ||
 
             string.contains('嘻哈') && settings.renderPlayer.get() ||
             string.contains('喜哈') && settings.renderPlayer.get();
