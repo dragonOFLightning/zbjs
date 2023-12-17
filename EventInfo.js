@@ -229,7 +229,7 @@ function TheEventInfo() {
                     // 更新上一次切换的物品名称
                     changeDataList[changeDataIndex].lastItemName = itemName;
 
-                } catch (error) {};
+                } catch (error) { };
             }
         }
     };
@@ -309,10 +309,13 @@ function TheEventInfo() {
     };
 
 
-    // 定义 [ isRenderChat ] 用于判断是否符合渲染条件 Boolean
+    /**
+     * @function isRenderChat 判断是否是需要渲染的聊天
+     * @param {java.lang.String} string 聊天字符串
+     * @returns {boolean} 是否是需要渲染的聊天
+     */
     function isRenderChat(string) {
 
-        // 此逻辑过于简单 懒得注释 仅需注意 string是一个 java.lang.String 类型
         return string.contains('Gold') && settings.renderGame.get() && isGoldChat(string) ||
             string.contains('金钱') && settings.renderGame.get() && isGoldChat(string) ||
             string.contains(' Creepers remaining...') && settings.renderGame.get() ||
@@ -332,7 +335,11 @@ function TheEventInfo() {
             string.contains('喜哈') && settings.renderPlayer.get();
     };
 
-    // 定义 [ isGoldChat ] 用于判断是否为经济类型的聊天 Boolean
+    /**
+     * @function isGoldChat 判断是不是金钱的聊天
+     * @param {java.lang.String} theString 
+     * @returns {boolean} 是否金钱的聊天
+     */
     function isGoldChat(theString) {
 
         // 获取存在 '+' 的索引 integer
@@ -398,13 +405,13 @@ function TheEventInfo() {
         this.count = count;
     }
 
-    // 定义渲染数据的构造函数
+    /**
+     * @class 渲染数据类
+     * @param {string|java.lang.String} text 文本
+     * @param {integer} time 持续时间
+     */
     function RenderData(text, time) {
-
-        // [ string ] 用于存储渲染文本 @string
         this.string = text;
-
-        // [ tick ] 用于计数渲染的时长 @integer
         this.tick = time;
     }
 }
