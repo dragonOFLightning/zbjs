@@ -1,300 +1,363 @@
-/*
-    这是一个LiquidBounce的JavaScript脚本的模板
-    正在持续更新 当前更新日期 UTC+8 2023-12-17
-    原版教程在 github.com/CCBlueX/LiquidScript
-*/
-
-// 定义脚本名称
+/**定义脚本名称 */
 var scriptName = 'JS';
 
-// 定义脚本版本
+/**定义脚本版本 */
 var scriptVersion = '1.0.0';
 
-// 定义脚本作者
+/**定义脚本作者 */
 var scriptAuthor = ['ColdDragon'];
 
-// ######## - net.minecraft.network.play.client - ########
-/**@type {net.minecraft.network.play.client.C08PacketPlayerBlockPlacement} 引入客户端放置数据包类型*/
-var C08PacketPlayerBlockPlacement = Java.type('net.minecraft.network.play.client.C08PacketPlayerBlockPlacement');
+// 使用全大写和_命名是常量
+/**Minecraft客户端的网络数据包 */
+var CLIENT_PACKET = {
+    /**客户端放置数据包类型 */
+    C08PacketPlayerBlockPlacement: Java.type('net.minecraft.network.play.client.C08PacketPlayerBlockPlacement'),
 
-/**@type {net.minecraft.network.play.client.C07PacketPlayerDigging} 引入客户端挖掘数据包类型*/
-var C07PacketPlayerDigging = Java.type('net.minecraft.network.play.client.C07PacketPlayerDigging');
+    /**客户端挖掘数据包类型 */
+    C07PacketPlayerDigging: Java.type('net.minecraft.network.play.client.C07PacketPlayerDigging'),
 
-/**@type {net.minecraft.network.play.client.C01PacketChatMessage'} 引入客户端聊天数据包类型*/
-var C01PacketChatMessage = Java.type('net.minecraft.network.play.client.C01PacketChatMessage');
-
-// ######## - net.minecraft.network.play.server - ########
-/**@type {net.minecraft.network.play.server.S03PacketTimeUpdate} 引入世界时间数据包类型*/
-var S03PacketTimeUpdate = Java.type('net.minecraft.network.play.server.S03PacketTimeUpdate');
-
-/**@type {net.minecraft.network.play.server.S0BPacketAnimation} 引入动画数据包类型*/
-var S0BPacketAnimation = Java.type('net.minecraft.network.play.server.S0BPacketAnimation');
-
-/**@type {net.minecraft.network.play.server.S02PacketChat} 引入服务器聊天数据包类型*/
-var S02PacketChat = Java.type('net.minecraft.network.play.server.S02PacketChat');
-
-/**@type {net.minecraft.network.play.server.S45PacketTitle} 引入服务器标题数据包类型*/
-var S45PacketTitle = Java.type('net.minecraft.network.play.server.S45PacketTitle');
-
-// ######## - net.minecraft.entity - ########
-/**@type {net.minecraft.entity.item.EntityArmorStand} 引入实体盔甲架类型*/
-var EntityArmorStand = Java.type('net.minecraft.entity.item.EntityArmorStand');
-
-/**@type {net.minecraft.entity.player.EntityPlayer} 引入实体玩家*/
-var EntityPlayer = Java.type('net.minecraft.entity.player.EntityPlayer');
-
-// ######## - net.minecraft.item - ########
-/**@type {net.minecraft.item} 引入物品剑*/
-var ItemSword = Java.type('net.minecraft.item.ItemSword');
-
-// ######## - net.minecraft.util - ########
-/**@type {net.minecraft.util.AxisAlignedBB} 引入容器类型*/
-var AxisAlignedBB = Java.type('net.minecraft.util.AxisAlignedBB');
-
-/**@type {net.minecraft.util.EnumFacing} 引入方块朝向枚举类*/
-var EnumFacing = Java.type('net.minecraft.util.EnumFacing');
-
-/**@type {net.minecraft.util.BlockPos} 引入方块坐标数据类型*/
-var BlockPos = Java.type('net.minecraft.util.BlockPos');
-
-// ######## - net.ccbluex - ########
-/**@type {net.ccbluex.liquidbounce.utils.render.RenderUtils} 引入渲染工具*/
-var RenderUtils = Java.type('net.ccbluex.liquidbounce.utils.render.RenderUtils');
-
-// ######## - java - ########
-/**@type {java.awt.Color} 引入颜色类型*/
-var Color = Java.type('java.awt.Color');
-
-/**@type {java.util.Timer} 引入计时器类型*/
-var Timer = Java.type('java.util.Timer');
-
-/**@type {java.util.TimerTask} 引入抽象计时器类型*/
-var TimerTask = Java.type('java.util.TimerTask');
-
-// 定义模块的构造函数
-function TheJS() {
-
-    // 定义 [ setting ] 对象 用于提供选项
-    var setting = {
-
-        // 浮点数选项 [ string名称名称 number默认值 number最小值 number最大值 ]
-        float: function (name, def, min, max) {
-            return value.createFloat(name, def, min, max);
-        },
-
-        // 整数选项 [ string名称 number默认值 number最小值 number最大值 ]
-        integer: function (name, def, min, max) {
-            return value.createInteger(name, def, min, max);
-        },
-
-        // 列表选项 [ string名称 array数组 string默认值 ]
-        list: function (name, values, def) {
-            return value.createList(name, values, def);
-        },
-
-        // 布尔值选项 [ string名称 boolean默认值 ]
-        boolean: function (name, def) {
-            return value.createBoolean(name, def);
-        },
-
-        // 文本选项 [ string名称 string默认值 ]
-        text: function (name, def) {
-            return value.createText(name, def);
-        },
-
-        // 方块选项 [ string名称 number默认值]
-        block: function (name, def) {
-            return value.createBlock(name, def);
-        }
-    };
-
-    // 定义 [ settings ] 对象 用于设置选项
-    var settings = {
-        round: setting.integer('round', 101, 1, 105),
-        true: setting.boolean('true', false),
-        $100: setting.float('$100%', 0.4, 0.1, 1),
-        simple: setting.list('simple', ['2+2', '3+1', 'cc 0d'], '2+2'),
-        number: setting.block('number', 0),
-        text: setting.text('text', '基岩')
-    };
-
-    /**@override 定义模块选项 */
-    this.addValues = function (values) {
-        for (var i in settings) {
-            values.add(settings[i])
-        }
-    };
-
-    /**@override 定义模块名称 */
-    this.getName = function () {
-        return 'JS'
-    };
-
-    /**@override 定义模块描述 */
-    this.getDescription = function () {
-        return 'ColdDragon'
-    };
-
-    /**@override 定义模块归类 */
-    this.getCategory = function () {
-        return 'Fun'
-    };
-
-    /**@override 模块启用时调用 */
-    this.onEnable = function () { };
-
-    /**@override 每一tick更新时调用 */
-    this.onUpdate = function () { };
-
-    /**@override 模块禁用时调用 */
-    this.onDisable = function () { };
-
-    /**
-     * @override 模块检测到数据包时调用 
-     * @param {net.ccbluex.liquidbounce.event.PacketEvent} event 数据包事件
-     */
-    this.onPacket = function (event) {
-
-        // 获取包
-        var thePacket = event.getPacket();
-
-        // 如果数据包 的类型是 C01PacketChatMessage
-        if (thePacket instanceof C01PacketChatMessage) { }
-    };
-
-    /**
-     * @override 模块渲染2D时调用
-     * @param {net.ccbluex.liquidbounce.event.Render2DEvent} event 渲染2D事件 这个event暂时不知道咋用
-     */
-    this.onRender2D = function (event) {
-        // 在屏幕上渲染带阴影的文本
-        mc.fontRendererObj.drawString('神龙啊啊啊', 9, 450, 0x8B0000, true);
-    };
-
-    /**
-     * @override 模块渲染3D时调用
-     * @param {net.ccbluex.liquidbounce.event.Render3DEvent} event 渲染3D事件 这个event暂时不知道咋用
-     */
-    this.onRender3D = function (event) {
-        // 在特定坐标渲染文本
-        RenderUtils.renderNameTag('三维坐标', 1, 1, 1);
-    };
-
-    /**
-     * @override 攻击时调用
-     * @param {net.ccbluex.liquidbounce.event.AttackEvent} event 攻击事件
-     */
-    this.onAttack = function (event) {
-        // 获取攻击的实体
-        event.getTargetEntity();
-    };
-
-    /**
-     * @override 按下键盘的特定键时调用
-     * @param {net.ccbluex.liquidbounce.event.KeyEvent} event 按键事件
-     */
-    this.onKey = function (event) {
-        // 获取按键ID
-        event.getKey();
-    };
-
-    /**
-     * @override 点击方块时调用
-     * @param {net.ccbluex.liquidbounce.event.ClickBlockEvent} event 点击方块事件
-     */
-    this.onClickBlock = function (event) {
-        // 获取方块的三维坐标
-        event.getClickedBlock()
-    };
-
-    /**
-     * @function getDistanceDef 用于计算三维空间中2点之间的距离
-     * @param {number} x1 第一个点的 x 坐标
-     * @param {number} y1 第一个点的 y 坐标
-     * @param {number} z1 第一个点的 z 坐标
-     * @param {number} x2 第二个点的 x 坐标
-     * @param {number} y2 第二个点的 y 坐标
-     * @param {number} z2 第二个点的 z 坐标
-     * @returns {number} 欧几里平方
-     */
-    function getDistanceDef(x1, y1, z1, x2, y2, z2) {
-
-        // 计算差值
-        var x = x2 - x1;
-        var y = y2 - y1;
-        var z = z2 - z1;
-
-        // 返回平方
-        return x * x + y * y + z * z;
-    };
-
-    /**
-     * @function inGame 用于判断是否在游戏中
-     * @returns {Boolean} 是否在游戏中
-     */
-    function inGame() {
-
-        // 尝试调用
-        try {
-
-            // 获取计分板名称 java.lang.String
-            var name = mc.theWorld.getScoreboard().getScores()[0].getObjective().getName();
-
-            // 判断name是否包含以下的字符串
-            return name === 'PreScoreboard' || name === 'health' || name === 'health_tab' || name === 'ZScoreboard';
-
-
-        } catch (error) {
-
-            /**
-             * 报错就返回 false
-             * 如果没有计分板就不在游戏 因为游戏默认都有计分板
-             */
-            return false;
-        }
-    };
-
-    /**                                                                                                                                                                                                                                                             
-     * @function getVolume 用于计算三维空间中2点围成的区域体积                                                                                                                                                                                                                                                          
-     * @param {number} maxX 区域的最大 x 坐标                                                                                                                                                                                                                                                           
-     * @param {number} maxY 区域的最大 y 坐标                                                                                                                                                                                                                                                           
-     * @param {number} maxZ 区域的最大 z 坐标                                                                                                                                                                                                                                                           
-     * @param {number} minX 区域中最大 x 坐标                                                                                                                                                                                                                                                           
-     * @param {number} minY 区域中最大 y 坐标                                                                                                                                                                                                                                                           
-     * @param {number} minZ 区域中最大 z 坐标                                                                                                                                                                                                                                                           
-     * @returns {number} 体积                                                                                                                                                                                                                                                           
-     */
-    function getVolume(maxX, maxY, maxZ, minX, minY, minZ) {
-        var lengthX = maxX - minX;
-        var lengthY = maxY - minY;
-        var lengthZ = maxZ - minZ;
-        return lengthX * lengthY * lengthZ;
-    };
+    /**客户端聊天数据包类型 */
+    C01PacketChatMessage: Java.type('net.minecraft.network.play.client.C01PacketChatMessage'),
 }
 
-// 脚本启用时调用
+/**Minecraft服务器的网络数据包 */
+var SERVER_PACKET = {
+    /**服务器聊天数据包类型 */
+    S02PacketChat: Java.type('net.minecraft.network.play.server.S02PacketChat'),
+
+    /**世界时间数据包类型 */
+    S03PacketTimeUpdate: Java.type('net.minecraft.network.play.server.S03PacketTimeUpdate'),
+
+    /**服务器标题数据包类型 */
+    S45PacketTitle: Java.type('net.minecraft.network.play.server.S45PacketTitle'),
+
+    /**动画数据包类型 */
+    S0BPacketAnimation: Java.type('net.minecraft.network.play.server.S0BPacketAnimation'),
+}
+
+/**Minecraft的实体 */
+var ENTITY = {
+    /**实体盔甲架类型 */
+    EntityArmorStand: Java.type('net.minecraft.entity.item.EntityArmorStand'),
+
+    /**实体玩家类型 */
+    EntityPlayer: Java.type('net.minecraft.entity.player.EntityPlayer'),
+}
+
+/**Minecraft的物品 */
+var ITEM = {
+    /**物品剑类型 */
+    ItemSword: Java.type('net.minecraft.item.ItemSword'),
+}
+
+/**Minecraft的工具 */
+var UTIL = {
+    /**实体或方块边界框类型 */
+    AxisAlignedBB: Java.type('net.minecraft.util.AxisAlignedBB'),
+
+    /**方块朝向枚举类型 */
+    EnumFacing: Java.type('net.minecraft.util.EnumFacing'),
+
+    /**方块坐标类型 */
+    BlockPos: Java.type('net.minecraft.util.BlockPos'),
+}
+
+/**CCBlueX的内置Java类 */
+var CCBLUEX = {
+    /**CCBlueX的渲染引擎 */
+    RenderUtils: Java.type('net.ccbluex.liquidbounce.utils.render.RenderUtils'),
+}
+
+/**原生的Java类 */
+var JAVA_CLASS = {
+    /**颜色类 */
+    Color: Java.type('java.awt.Color'),
+
+    /**计时器类 */
+    Timer: Java.type('java.util.Timer'),
+
+    /**计时器任务类 */
+    TimerTask: Java.type('java.util.TimerTask'),
+}
+
+// 选项的类型就这些 无需更改此
+/**定义 [ setting ] 对象 用于提供选项 */
+var setting = {
+
+    /**
+     * @function float 浮点数选项
+     * @param {string} name 选项名称
+     * @param {float} def 选项默认值
+     * @param {float} min 选项最小值
+     * @param {float} max 选项最大值
+     * @returns {object} 选项
+     */
+    float: function (name, def, min, max) {
+        return value.createFloat(name, def, min, max);
+    },
+
+    /**
+     * @function integer 浮点数选项
+     * @param {string} name 选项名称
+     * @param {integer} def 选项默认值
+     * @param {integer} min 选项最小值
+     * @param {integer} max 选项最大值
+     * @returns {object} 选项
+     */
+    integer: function (name, def, min, max) {
+        return value.createInteger(name, def, min, max);
+    },
+
+    /**
+     * @function list 列表选项
+     * @param {string} name 选项名称
+     * @param {Array<string>} values 选项可选值
+     * @param {string} def 选项默认值
+     * @returns {object} 选项
+     */
+    list: function (name, values, def) {
+        return value.createList(name, values, def);
+    },
+
+    /**
+     * @function boolean 布尔值选项
+     * @param {string} name 选项名称
+     * @param {boolean} def 选项默认值
+     * @returns {object} 选项
+     */
+    boolean: function (name, def) {
+        return value.createBoolean(name, def);
+    },
+
+    /**
+     * @function text 文本选项
+     * @param {string} name 选项名称 
+     * @param {string} def 选项默认值
+     * @returns {object} 选项
+     */
+    text: function (name, def) {
+        return value.createText(name, def);
+    },
+
+    // 该选项类似integer 有进度条可以滑动 根据滑动选择的数字映射对应的方块
+    /**
+     * @function block 方块选项
+     * @param {string} name 选项名称
+     * @param {integer} def 选项默认值
+     * @returns {object} 选项
+     */
+    block: function (name, def) {
+        return value.createBlock(name, def);
+    }
+};
+
+/**定义 [ settings ] 对象 用于设置选项 */
+var settings = {
+    round: setting.integer('round', 101, 1, 105),
+    enableFeature: setting.boolean('enableFeature', false),
+    percentage: setting.float('percentage', 0.4, 0.1, 1),
+    mode: setting.list('mode', ['Option1', 'Option2', 'Option3'], 'Option1'),
+    selectedBlock: setting.block('selectedBlock', 0),
+    description: setting.text('description', 'demo'),
+};
+
+// 生命周期函数的命名方式为 模块名_生命周期函数名
+/**@function JS_onEnable 模块启用时调用 */
+function JS_onEnable() { };
+
+/**@function JS_onUpdate 每tick调用 */
+function JS_onUpdate() { };
+
+/**@function JS_onDisable 模块关闭时调用 */
+function JS_onDisable() { };
+
+/**
+ * @function JS_onPacket 监听到Packet事件时调用
+ * @param {net.ccbluex.liquidbounce.event.PacketEvent} event 
+ */
+function JS_onPacket(event) {
+    // 获取数据包
+    var packet = event.getPacket();
+};
+
+/**
+* @function JS_onRender2D 监听到渲染2D事件时调用
+* @param {net.ccbluex.liquidbounce.event.Render2DEvent} event 
+*/
+function JS_onRender2D(event) {
+    // 在x=9 y=200的位置渲染颜色为[0x00ffff]的文本[至尊神龙]带阴影[true]
+    mc.fontRendererObj.drawString('至尊神龙', 9, 200, 0xFFA500, true)
+};
+
+/**
+ * @function JS_onRender2D 监听到渲染3D事件时调用
+ * @param {net.ccbluex.liquidbounce.event.Render3DEvent} event 
+ */
+function JS_onRender3D(event) {
+    // 在特定位置渲染三维的文本
+    CCBLUEX.RenderUtils.renderNameTag('hello world', 100, 100, -100);
+
+    // 在相对位置渲染三维的方框
+    var color = new JAVA_CLASS.Color(30, 170, 255, 50)
+    var box = new UTIL.AxisAlignedBB(-.5, 4, -.5, .5, 3, .5)
+    CCBLUEX.RenderUtils.drawAxisAlignedBB(box, color)
+
+    // 在绝对位置渲染三维的方框
+    var renderManager = mc.getRenderManager();
+    var x1 = 100 - renderManager.renderPosX
+    var y1 = 60 - renderManager.renderPosY
+    var z1 = -100 - renderManager.renderPosZ
+    var x2 = 101 - renderManager.renderPosX
+    var y2 = 61 - renderManager.renderPosY
+    var z2 = -101 - renderManager.renderPosZ
+    var box = new UTIL.AxisAlignedBB(x1, y1, z1, x2, y2, z2)
+    CCBLUEX.RenderUtils.drawAxisAlignedBB(box, color)
+};
+
+/**
+ * @function JS_onAttack 监听到攻击事件时调用
+ * @param {net.ccbluex.liquidbounce.event.AttackEvent} event 
+ */
+function JS_onAttack(event) {
+    // 获取攻击的目标实体
+    var targetEntity = event.getTargetEntity();
+};
+
+/**
+ * @function JS_onKey 监听到按键事件时调用
+ * @param {net.ccbluex.liquidbounce.event.KeyEvent} event 
+ */
+function JS_onKey(event) {
+    // 获取按下的键的ID
+    var keyID = event.getKey();
+};
+
+/**
+ * @function JS_onClickBlock 监听到点击方块事件时调用
+ * @param {net.ccbluex.liquidbounce.event.ClickBlockEvent} event 
+ */
+function JS_onClickBlock(event) {
+    // 获取点击的方块
+    var block = event.getClickedBlock();
+};
+
+/**@class JS 模块*/
+function JS() { }
+/**@override 模块名称*/
+JS.prototype.getName = function () { return 'JS' }
+/**@override 模块描述*/
+JS.prototype.getDescription = function () { return 'ColdDragon' }
+/**@override 模块类型*/
+JS.prototype.getCategory = function () { return 'Fun' }
+/**@override */
+JS.prototype.onEnable = JS_onEnable
+/**@override */
+JS.prototype.onUpdate = JS_onUpdate
+/**@override */
+JS.prototype.onDisable = JS_onDisable
+/**@override */
+JS.prototype.onPacket = JS_onPacket
+/**@override */
+JS.prototype.onRender2D = JS_onRender2D
+/**@override */
+JS.prototype.onRender3D = JS_onRender3D
+/**@override */
+JS.prototype.onAttack = JS_onAttack
+/**@override */
+JS.prototype.onKey = JS_onKey
+/**@override */
+JS.prototype.onClickBlock = JS_onClickBlock
+/**@override 覆写添加值函数 用于给模块添加选项*/
+JS.prototype.addValues = function (values) {
+    for (var key in settings) {
+        values.add(settings[key])
+    }
+};
+
+/**
+ * @function getDistanceDef 用于计算三维空间中2点之间的距离
+ * @param {number} x1 第一个点的 x 坐标
+ * @param {number} y1 第一个点的 y 坐标
+ * @param {number} z1 第一个点的 z 坐标
+ * @param {number} x2 第二个点的 x 坐标
+ * @param {number} y2 第二个点的 y 坐标
+ * @param {number} z2 第二个点的 z 坐标
+ * @returns {number} 欧几里平方
+ */
+function getDistanceDef(x1, y1, z1, x2, y2, z2) {
+
+    // 计算差值
+    var x = x2 - x1
+    var y = y2 - y1
+    var z = z2 - z1
+
+    // 返回平方
+    return x * x + y * y + z * z
+};
+
+/**
+ * @function inGame 用于判断是否在游戏中
+ * @returns {Boolean} 是否在游戏中
+ */
+function inGame() {
+
+    // 尝试调用
+    try {
+
+        /**@type {java.lang.String} 获取计分板名称*/
+        var name = mc.theWorld.getScoreboard().getScores()[0].getObjective().getName();
+
+        // 判断name是否包含以下的字符串
+        return name === 'PreScoreboard' || name === 'health' || name === 'health_tab' || name === 'ZScoreboard';
+
+
+    } catch (error) {
+
+        /*
+         * 报错就返回 false
+         * 如果没有计分板就不在游戏 因为游戏默认都有计分板
+         */
+        return false;
+    }
+};
+
+/**                                                                                                                                                                                                                                                             
+ * @function getVolume 用于计算三维空间中2点围成的区域体积                                                                                                                                                                                                                                                          
+ * @param {number} maxX 区域的最大 x 坐标                                                                                                                                                                                                                                                           
+ * @param {number} maxY 区域的最大 y 坐标                                                                                                                                                                                                                                                           
+ * @param {number} maxZ 区域的最大 z 坐标                                                                                                                                                                                                                                                           
+ * @param {number} minX 区域中最小 x 坐标                                                                                                                                                                                                                                                           
+ * @param {number} minY 区域中最小 y 坐标                                                                                                                                                                                                                                                           
+ * @param {number} minZ 区域中最小 z 坐标                                                                                                                                                                                                                                                           
+ * @returns {number} 体积                                                                                                                                                                                                                                                           
+ */
+function getVolume(maxX, maxY, maxZ, minX, minY, minZ) {
+    var lengthX = maxX - minX;
+    var lengthY = maxY - minY;
+    var lengthZ = maxZ - minZ;
+    return lengthX * lengthY * lengthZ;
+};
+
+/**脚本启用时调用 */
 function onLoad() {
 
-    // 输出一句话表示已加载
-    chat.print('§9' + 'JS' + ' §2- §4Load');
+    // 文字反馈模块已加载
+    chat.print('§9JS §2- §4Load');
 }
 
-// 创建模块的实例
-var dragonJS = new TheJS();
+/**@type {object} 定义脚本模块*/
+var scriptModule;
 
-// 定义 [ dragonJSClient ] 用于存储注册信息
-var dragonJSClient;
-
-// 脚本运行时调用
+/**脚本运行时调用 */
 function onEnable() {
 
-    // 注册
-    dragonJSClient = moduleManager.registerModule(dragonJS);
+    // 注册模块
+    scriptModule = moduleManager.registerModule(new JS());
 }
 
-// 脚本禁用时调用
+/**脚本禁用时调用 */
 function onDisable() {
 
-    // 注销
-    moduleManager.unregisterModule(dragonJSClient);
+    // 注销模块
+    moduleManager.unregisterModule(scriptModule);
 }
