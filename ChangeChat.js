@@ -2,10 +2,11 @@
     聊天选择器
         - 可用于低血量提醒
         - 可用于补全缩写
+         - 聊天开头加上$取消补全
         - 可用于拦截不良信息
         - 可使用cd-s-执行刷屏命令
         - 可扩展 各个执行函数独立运行
-        - 当前更新的时间 UTC + 8 2023-10-14
+        - 当前更新的时间 UTC + 8 2024-1-16
 
     此脚本为重制版 更加模块化 添加更多功能 类型更清晰 移除无用功能
 */
@@ -14,7 +15,7 @@
 var scriptName = 'ChangeChat';
 
 // 定义脚本版本
-var scriptVersion = '2.1.1';
+var scriptVersion = '2.1.2';
 
 // 定义脚本作者
 var scriptAuthor = ['ColdDragon'];
@@ -110,7 +111,7 @@ function TheChangeChat() {
 
     // 定义模块归类
     this.getCategory = function () {
-        return 'Player'
+        return 'Fun'
     };
 
     // 定义 [ tick ] 用于计数 @integer
@@ -496,23 +497,55 @@ function TheChangeChat() {
             if (index !== -1) {
 
                 // 获取 ':' 后面的字符 需要+2才能精确获取 @string
-                var string = text.toString().substring(index + 2);
-
-                // 辨别其他的字符
-                var notL = string.indexOf('Le') === -1;
-
-                // 判断是否包含 L 和 自己名称 @boolean
-                var includesSelf = string.indexOf(mc.thePlayer.getName().toString()) !== -1 && notL;
-
-                // 判断是否 全是L @boolean
-                var allL = /^[lL]+$/i.test(string);
+                var string = text.toString().substring(index + 1);
 
                 // 判断是否包含 Loser @boolean
-                var includesLoser = string.toLowerCase().indexOf('loser') !== -1;
-                return allL || includesSelf || includesLoser;
+                var includesLoser = /loser/i.test(string);
+                return stringAllL(string) || includesLoser || isBadLSimpleString(string);
             };
         };
     };
+
+    /**
+     * @function isBadLSimpleString 用于判断字符串中的L字符是否是不健康的
+     * @param {string} string 完整的字符串
+     * @returns {boolean} 字符串中的L支付是否是不健康的
+     */
+    function isBadLSimpleString(string) {
+
+        // 如果删去空格后的字符串全是L
+        if (stringAllL(string.replace(/ /g, ''))) {
+            return true;
+        }
+
+        // 把字符串中每个单词拆出来
+        var stringArray = string.split(' ');
+
+        for (var i = 0; i < stringArray.length; i++) {
+            // 获取删除空格的单词
+            var simpleString = stringArray[i].replace(/ /g, '');
+
+            // 如果没有字符
+            if (!simpleString) {
+                continue;
+            }
+
+            // 如果单词中字符全是L
+            if (stringAllL(simpleString)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @function stringAllL 用于判断字符串中是不是全是L字符
+     * @param {string} string 
+     * @returns {boolean} 字符串中是不是全是L字符
+     */
+    function stringAllL(string) {
+        return /^[lL]+$/i.test(string)
+    }
 
     // 定义 [ doChatCompletion ] ([ C01PacketChatMessage ] thePacket) 用于执行聊天补全 @void
     function doChatCompletion(thePacket) {
@@ -520,8 +553,21 @@ function TheChangeChat() {
         // 获取数据包的Java字符串强转JavaScript字符串 @string
         var theMessage = thePacket.message.toString();
 
+        // 如果开头检测到$就不补全
+        if (theMessage[0] === '$') {
+            // 删除掉开头的$ 以方便交流
+            thePacket.message = theMessage.substring(1);
+            return;
+        }
+
         // 定义文本缩写 [ key ] 对应的全拼 [ value ] 请注意顺序会影响兼容性 @object
         var replaceRules = {
+            'bbr': 'bb -r',
+            'der': 'de -r',
+            'bbh': 'bb -h',
+            'deh': 'de -h',
+            'bbn': 'bb -n',
+            'den': 'bb -n',
             's1': 'Save 1 || Keep 1',
             'ht': 'Hotel',
             'ps': 'Power Station',
@@ -573,6 +619,11 @@ function TheChangeChat() {
             'ss': 'Shopping Surging',
             'lr': 'Lightning Rod',
             'pc': 'Perk Corner',
+            'lib': 'Library',
+            'dun': 'Dungeon',
+            'cry': 'Crypts',
+            'fw': 'Ferris Wheel',
+            'bc': 'Bumper Cars',
         };
 
         // 循环判断 replaceRules
