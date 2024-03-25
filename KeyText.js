@@ -1,3 +1,10 @@
+/**
+ * 小王子制造
+ * 
+ * 文本宏 用于缩写自动转换成全拼 当然也可以用来做一些有趣的事情 如用0和1拼凑一个完整的字
+ * 支持随机前后缀
+ * 此脚本默认的配置需要搭配ChangeChat才可以使用 不想装ChangeChat的自行修改配置
+ */
 // 定义脚本名称
 var scriptName = 'KeyText';
 
@@ -5,7 +12,7 @@ var scriptName = 'KeyText';
 var scriptVersion = '1.0.0';
 
 // 定义脚本作者
-var scriptAuthor = ['ColdDragon'];
+var scriptAuthor = ['CheemsSheep'];
 
 // 定义模块的构造函数
 function TheKeyText() {
@@ -63,7 +70,7 @@ function TheKeyText() {
 
     // 定义模块描述
     this.getDescription = function () {
-        return 'ColdDragon'
+        return 'CheemsSheep'
     };
 
     // 定义模块归类

@@ -1,3 +1,5 @@
+// 已废弃
+
 // 定义脚本名称
 var scriptName = 'Title';
 
@@ -26,7 +28,7 @@ function theTitle() {
     var settings = {
 
         // 定义选项 设置标题文本
-        setTitle: setting.text('title', '龙之心~~龙之心~~龙之心~~[dRagon]')
+        setTitle: setting.text('title', '龙之心~~龙之心~~龙之心~~[3dragons]')
     };
 
     // 定义模块选项

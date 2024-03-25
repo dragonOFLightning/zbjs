@@ -1,11 +1,15 @@
 /*
+    龙界板块废弃
+
     可以快速进入 Zombies 地图
     Chat模式下根据发送的聊天选择地图 被动
     Oppress在你启动就进入选择的地图 主动
+
+    此脚本的功能基本都已经被ChangeChat实现
 */
 
 // 定义脚本的名称
-var scriptName = 'dRagon';
+var scriptName = 'FastMap';
 
 // 定义脚本的版本
 var scriptVersion = '1.1.0';

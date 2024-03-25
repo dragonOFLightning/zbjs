@@ -1,4 +1,9 @@
-/* 这是一个初代版本第二次更新 目前很多地方待优化 */
+/*
+    冰龙之子制造
+    
+    仓库MD是写着用于增强Zombies的游戏体验 但这个是例外 用来玩色彩派对的
+    此脚本曾是冰龙之子送给小王子的10.1国庆节礼物 后面开源了
+ */
 
 // 定义脚本名字
 var scriptName = 'LightClay';
@@ -7,7 +12,7 @@ var scriptName = 'LightClay';
 var scriptVersion = '0.2.0';
 
 // 定义脚本作者
-var scriptAuthor = ['ColdDragon'];
+var scriptAuthor = ['dragonsocd'];
 
 // 引入BlockPos对象 用于存储三维坐标
 var BlockPos = Java.type('net.minecraft.util.BlockPos');
@@ -72,7 +77,7 @@ function theLightClay() {
     }
     // 定义模块描述
     this.getDescription = function () {
-        return 'ColdDragon';
+        return 'dragonsocd';
     }
     // 定义模块分类
     this.getCategory = function () {

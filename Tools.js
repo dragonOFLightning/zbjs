@@ -1,3 +1,5 @@
+// 已废弃
+
 // 定义脚本名称
 var scriptName = 'Tools';
 

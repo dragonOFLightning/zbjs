@@ -1,3 +1,9 @@
+/**
+ * 小王子制造
+ * 
+ * 滑雪脚本 懂的都懂
+ */
+
 // 定义脚本名称
 var scriptName = 'Ski';
 
@@ -5,7 +11,7 @@ var scriptName = 'Ski';
 var scriptVersion = '1.0.0';
 
 // 定义脚本作者
-var scriptAuthor = ['ColdDragon'];
+var scriptAuthor = ['CheemsSheep'];
 
 // 定义模块的构造函数
 function theSki() {
@@ -38,7 +44,7 @@ function theSki() {
 
     // 定义模块描述
     this.getDescription = function () {
-        return 'ColdDragon';
+        return 'CheemsSheep';
     };
 
     // 定义模块归类

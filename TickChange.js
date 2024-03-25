@@ -1,3 +1,5 @@
+// 模仿其他玩家切快捷栏 已废弃
+
 // 定义脚本名称
 var scriptName = 'TickChange';
 
