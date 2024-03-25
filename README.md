@@ -26,3 +26,12 @@ Step 2 Open and switch to the[scripts]directory under the root directory of Liqu
 
 阶 3 按照需求下载对应的[.js]脚本到[scripts]目录中<br/>
 Step 3 Download the corresponding[.js]script to the[scripts]directory according to your needs
+
+<h3>Q&A<br/>
+问答</h3>
+
+<h2>Q No[Releases]?<br/>
+问 没[Releases]？</h2>
+
+<h2>A It script lang So source code was[Releases]<br/>
+答 这是脚本语言 所以源代码就是[Releases]</h2>
