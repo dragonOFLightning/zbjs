@@ -25,4 +25,4 @@ Step 1 Download the LiquidBounce JavaScript interpreter by[CCBlueX] Link<a href=
 Step 2 Open and switch to the[scripts]directory under the root directory of LiquidBounce
 
 阶 3 按照需求下载对应的[.js]脚本到[scripts]目录中<br/>
-Step 3 Download the corresponding [.js] script to the[scripts]directory according to your needs
+Step 3 Download the corresponding[.js]script to the[scripts]directory according to your needs
