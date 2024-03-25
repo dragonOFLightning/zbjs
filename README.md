@@ -10,7 +10,7 @@ What is it used for and how to use it</h3>
 In regard to this all these scripts are relatively independent Listing all of them here would make the README too long If you want to know what is it used for and how to use them please refer to the comments at the beginning of the script source code
 
 <h3>JS.js和old JS.js有什么用<br/>
-What is JS.js and JS.js for</h3>
+What is JS.js and old JS.js for</h3>
 
 脚本开发的模版 没有实际功能<br/>
 Just script template for develop Has no actual functionality
