@@ -1,3 +1,5 @@
+// 停更
+
 // 定义脚本名称
 var scriptName = 'Title';
 
@@ -42,7 +44,7 @@ function theTitle_mc() {
 
     // 定义模块名称
     this.getName = function () {
-        return 'Title'
+        return 'Title-mc'
     };
 
     // 定义模块描述
@@ -73,7 +75,7 @@ function onLoad() {
 // 定义模块实例
 var dragonTitle_mc = new theTitle_mc();
 
-// 定义 [ dragonTitlelient ] 用于存储注册信息
+// 定义 [ dragonTitle_mcClient ] 用于存储注册信息
 var dragonTitle_mcClient;
 
 // 脚本启用时调用

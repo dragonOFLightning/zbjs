@@ -1,5 +1,5 @@
 /*
-    制造者未知
+    小王子制作
 
     聊天选择器
         - 可用于低血量提醒
@@ -20,7 +20,7 @@ var scriptName = 'ChangeChat';
 var scriptVersion = '2.1.2';
 
 // 定义脚本作者
-var scriptAuthor = null;
+var scriptAuthor = 'CheemsSheep';
 
 // 引入本地聊天数据包 [ C01PacketChatMessage ]
 var C01PacketChatMessage = Java.type('net.minecraft.network.play.client.C01PacketChatMessage');
@@ -108,7 +108,7 @@ function TheChangeChat() {
 
     // 定义模块描述
     this.getDescription = function () {
-        return 'null'
+        return 'CheemsSheep'
     };
 
     // 定义模块归类

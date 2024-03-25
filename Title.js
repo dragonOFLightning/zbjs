@@ -1,4 +1,4 @@
-// 已废弃
+// 停更
 
 // 定义脚本名称
 var scriptName = 'Title';
