@@ -47,8 +47,10 @@ function theTickChange() {
         /**@type {java.lang.String} 最近的玩家当前持有的物品*/
         var item = player.getHeldItem()
 
-        // 如果没有持有物品 则结束
+        // 如果没有持有物品
         if (!item) {
+            var emptySlot = getEmptySlot()
+            mc.thePlayer.inventory.currentItem = emptySlot === null ? mc.thePlayer.inventory.currentItem : emptySlot
             return
         }
 
@@ -77,6 +79,23 @@ function theTickChange() {
             }
         }
     }
+}
+
+/**
+ * @function getEmptySlot 获取空槽位
+ * @returns {integer} 空槽位
+ */
+function getEmptySlot() {
+    for (var slot = 0; slot < 9; slot++) {
+        /**@type {net.minecraft.item.ItemStack} 当前槽位的物品栈*/
+        var itemStack = mc.thePlayer.inventory.getStackInSlot(slot);
+
+        // 如果物品栈为空则可用
+        if (!itemStack) {
+            return slot;
+        }
+    }
+    return null;
 }
 
 /**
