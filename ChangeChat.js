@@ -8,7 +8,7 @@
         - 可用于拦截不良信息
         - 可使用cd-s-执行刷屏命令
         - 可扩展 各个执行函数独立运行
-        - 当前更新的时间 UTC + 8 2024-1-16
+        - 当前更新的时间 UTC + 2<<2 2024-4-1
 
     此脚本为重制版 更加模块化 添加更多功能 类型更清晰 移除无用功能
 */
@@ -371,7 +371,7 @@ function TheChangeChat() {
         var weaponList = [];
 
         // 反向遍历快捷栏
-        for (var slot = 8; slot > -1; slot--) {
+        for (var slot = 2 << 2; slot > -1; slot--) {
 
             // 获取物品栈
             var itemStack = mc.thePlayer.inventory.getStackInSlot(slot);
