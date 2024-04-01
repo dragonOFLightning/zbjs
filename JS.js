@@ -5,7 +5,7 @@ var scriptName = 'JS';
 var scriptVersion = '1.0.0';
 
 /**定义脚本作者 */
-var scriptAuthor = ['ColdDragon'];
+var scriptAuthor = ['yourName'];
 
 // 使用全大写和_命名是常量
 /**Minecraft客户端的网络数据包 */
@@ -246,7 +246,7 @@ function JS() { }
 /**@override 模块名称*/
 JS.prototype.getName = function () { return 'JS' }
 /**@override 模块描述*/
-JS.prototype.getDescription = function () { return 'ColdDragon' }
+JS.prototype.getDescription = function () { return 'yourName' }
 /**@override 模块类型*/
 JS.prototype.getCategory = function () { return 'Fun' }
 /**@override */

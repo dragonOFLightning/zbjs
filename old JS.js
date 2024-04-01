@@ -1,11 +1,11 @@
 /**定义脚本名称 */
-var scriptName = 'Test';
+var scriptName = 'JS';
 
 /**定义脚本版本 */
 var scriptVersion = '1.0.0';
 
 /**定义脚本作者 */
-var scriptAuthor = ['ColdDragon'];
+var scriptAuthor = ['yourName'];
 
 /**客户端放置数据包类型 */
 var C08PacketPlayerBlockPlacement = Java.type('net.minecraft.network.play.client.C08PacketPlayerBlockPlacement')
@@ -119,15 +119,15 @@ var setting = {
     }
 }
 
-function Test() {
+function JS() {
     /**@override 模块名称*/
     this.getName = function () {
-        return 'Test'
+        return 'JS'
     }
 
     /**@override 模块描述*/
     this.getDescription = function () {
-        return 'ColdDragon'
+        return 'yourName'
     }
 
     /**@override 模块类型*/
@@ -204,7 +204,7 @@ function Test() {
 function onLoad() {
 
     // 文字反馈模块已加载
-    chat.print('§9Test §2- §4Load');
+    chat.print('§9JS §2- §4Load');
 }
 
 /**@type {object} 定义脚本模块*/
@@ -214,7 +214,7 @@ var scriptModule;
 function onEnable() {
 
     // 注册模块
-    scriptModule = moduleManager.registerModule(new Test());
+    scriptModule = moduleManager.registerModule(new JS());
 }
 
 /**脚本禁用时调用 */
