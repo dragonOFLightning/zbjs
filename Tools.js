@@ -1,4 +1,4 @@
-// 即将删除
+// 即将删除 因为Tools.js的出现导致模块耦合性增加 主玩的就是一个模块之间独立运行 但Tool.js导致了一些模块必须依赖Tools.js
 
 // 定义脚本名称
 var scriptName = 'Tools';
