@@ -1,4 +1,10 @@
-// 停更
+/**
+ * 龙界板块制造 冰龙开发 3dragons贡献
+ * 
+ * Title-mc Minecraft的标题
+ * 
+ * 用于修改游戏标题 适用大部分情况 不局限Zombies
+ */
 
 // 定义脚本名称
 var scriptName = 'Title';
