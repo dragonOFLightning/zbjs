@@ -1,11 +1,11 @@
 /**
  * 龙界板块制造 冰龙开发 3dragons贡献
  * 
- * 同步切枪 TickChange 与最近的玩家同步切换快捷栏
+ * 同步切枪 SyncChange 与最近的玩家同步切换快捷栏
  */
 
 /**定义脚本名称 */
-var scriptName = 'TickChange'
+var scriptName = 'SyncChange'
 
 /**定义脚本版本 */
 var scriptVersion = '1.2.0'
@@ -46,8 +46,8 @@ var settings = {
     whitePlayer: setting.text('WhitePlayer', '3claws_dragons'),
 }
 
-/**@function TickChange_onUpdate 每tick调用 */
-function TickChange_onUpdate() {
+/**@function SyncChange_onUpdate 每tick调用 */
+function SyncChange_onUpdate() {
     /**@type {net.minecraft.entity.player.EntityPlayer} 同步的玩家*/
     var player = settings.whitePlayerMode.get() ? getPlayer(settings.whitePlayer.get()) : getClosePlayer()
 
@@ -92,18 +92,18 @@ function TickChange_onUpdate() {
     }
 }
 
-/**@class TickChange 模块*/
-function TickChange() { }
+/**@class SyncChange 模块*/
+function SyncChange() { }
 /**@override 模块名称*/
-TickChange.prototype.getName = function () { return 'TickChange' }
+SyncChange.prototype.getName = function () { return 'SyncChange' }
 /**@override 模块描述*/
-TickChange.prototype.getDescription = function () { return 'ColdDragon' }
+SyncChange.prototype.getDescription = function () { return 'ColdDragon' }
 /**@override 模块类型*/
-TickChange.prototype.getCategory = function () { return 'Fun' }
+SyncChange.prototype.getCategory = function () { return 'Fun' }
 /**@override */
-TickChange.prototype.onUpdate = TickChange_onUpdate
+SyncChange.prototype.onUpdate = SyncChange_onUpdate
 /**@override 覆写添加值函数 用于给模块添加选项*/
-TickChange.prototype.addValues = function (values) {
+SyncChange.prototype.addValues = function (values) {
     for (var key in settings) {
         values.add(settings[key])
     }
@@ -197,7 +197,7 @@ function getClosePlayer() {
 function onLoad() {
 
     // 文字反馈模块已加载
-    chat.print('§9TickChange §2- §4Load')
+    chat.print('§9SyncChange §2- §4Load')
 }
 
 /**@type {object} 定义脚本模块*/
@@ -207,7 +207,7 @@ var scriptModule
 function onEnable() {
 
     // 注册模块
-    scriptModule = moduleManager.registerModule(new TickChange())
+    scriptModule = moduleManager.registerModule(new SyncChange())
 }
 
 /**脚本禁用时调用 */
