@@ -1,14 +1,12 @@
 /*
-    龙界板块制造 冰龙之子开发 3dragons审核
+    龙界板块制造 冰龙之子开发 3dragons贡献
     dragonsocd 的含义
      - dragon, son of ColdDragon
      - dragons of ColdDragon 
 
     仓库MD是写着用于增强Zombies的游戏体验 但这个是例外 用来玩色彩派对的
-    此脚本曾是冰龙之子送给小王子的10.1国庆节礼物 后面开源了
-
-    此脚本有着特殊的纪念价值 不会删除
-     */
+    此脚本曾是冰龙之子送给小王子的10.1国庆节礼物 有着特殊的纪念价值 不会删除
+*/
 
 // 定义脚本名字
 var scriptName = 'LightClay';
