@@ -1,90 +1,139 @@
-// 模仿其他玩家切快捷栏 即将更新1.1.0
+/**
+ * 龙界板块制造 冰龙开发 3dragons贡献
+ * 
+ * 同步切枪 TickChange 与最近的玩家同步切换快捷栏
+ */
 
 // 定义脚本名称
-var scriptName = 'TickChange';
+var scriptName = 'TickChange'
 
 // 定义脚本版本
-var scriptVersion = '1.0.0';
+var scriptVersion = '1.1.0'
 
 // 定义脚本作者
-var scriptAuthor = ['ColdDragon'];
+var scriptAuthor = ['ColdDragon']
 
-// 引入 [ Tools.js ] 脚本工具
-script.import('Tools.js');
+/**实体玩家类型 */
+var EntityPlayer = Java.type('net.minecraft.entity.player.EntityPlayer')
 
 // 定义模块的构造函数
 function theTickChange() {
 
     // 定义模块名称
     this.getName = function () {
-        return 'TickChange';
-    };
+        return 'TickChange'
+    }
 
     // 定义模块描述
     this.getDescription = function () {
-        return 'ColdDragon';
-    };
+        return 'ColdDragon'
+    }
 
     // 定义模块归类
     this.getCategory = function () {
-        return 'Fun';
-    };
+        return 'Fun'
+    }
 
     // 模块更新时调用
     this.onUpdate = function () {
+        /**@type {net.minecraft.entity.player.EntityPlayer} 最近的玩家*/
+        var player = getClosePlayer()
 
-        // 获取最近的玩家
-        var player = getPlayerList()[1];
+        // 如果没获取到 就结束
+        if (!player) {
+            return
+        }
 
-        // 获取玩家的物品
-        var item = player.inventory.getStackInSlot(0).getDisplayName();
+        /**@type {java.lang.String} 最近的玩家当前持有的物品*/
+        var item = player.getHeldItem()
 
-        // 循环获取快捷栏
-        for (var i = 0; i < 9; i++) {
+        // 如果没有持有物品 则结束
+        if (!item) {
+            return
+        }
 
-            // 如果获取到的快捷栏没有物品
-            if (!mc.thePlayer.inventory.getStackInSlot(i)) {
+        /**@type {java.lang.String} 最近的玩家当前持有的物品名称*/
+        var itemName = item.getUnlocalizedName()
 
-                // 下一次循环
-                continue;
+        // 反向循环获取快捷栏 反向循环作用是给卡假枪的用的 正常情况和正向循环无差别
+        for (var slot = 2 << 2; slot > -1; slot--) {
+
+            /**@type {net.minecraft.item.ItemStack} 当前槽位的物品*/
+            var selfItem = mc.thePlayer.inventory.getStackInSlot(slot)
+
+            // 如果当前槽位没有物品 则跳过
+            if (!selfItem) {
+                continue
             }
 
-            // 获取快捷栏上的物品
-            var selfItem = mc.thePlayer.inventory.getStackInSlot(i).getDisplayName();
+            /**@type {java.lang.String} 当前槽位物品名称*/
+            var selfItemName = selfItem.getUnlocalizedName()
 
-            // 如果物品是其他玩家的物品
-            if (selfItem == item) {
+            // 如果当前槽位物品名称 和 最近的玩家持有的物品相同
+            if (selfItemName === itemName) {
 
                 // 切换快捷栏
-                mc.thePlayer.inventory.currentItem = i;
+                mc.thePlayer.inventory.currentItem = slot
             }
         }
-    };
+    }
+}
+
+/**
+ * @function getClosePlayer 获取最近的实体  
+ */
+function getClosePlayer() {
+
+    /**世界实体 */
+    var worldEntity = mc.theWorld.loadedEntityList
+
+    // 遍历世界实体
+    for (var key in worldEntity) {
+
+        /**@type {net.minecraft.entity.Entity} 实体*/
+        var entity = worldEntity[key]
+
+        /**@type {boolean} 是否是玩家*/
+        var isPlayer = entity instanceof EntityPlayer
+
+        // 跳过非玩家
+        if (!isPlayer) {
+            continue
+        }
+
+        // 跳过死实体
+        if (entity.isDead || entity === mc.thePlayer) {
+            continue
+        }
+
+        return entity
+    }
+    return null
 }
 
 // 脚本启用时调用
 function onLoad() {
 
     // 输出一句话表示正常
-    chat.print('§9' + 'TickChange' + ' §2- §4Load');
+    chat.print('§9' + 'TickChange' + ' §2- §4Load')
 }
 
 // 创建模块的实例 [ dragonTickChange ]
-var dragonTickChange = new theTickChange();
+var dragonTickChange = new theTickChange()
 
 // 定义 [ dragonTickChange ] 用于存储注册信息
-var dragonTickChangeClient;
+var dragonTickChangeClient
 
 // 脚本运行时调用
 function onEnable() {
 
     // 注册
-    dragonTickChangeClient = moduleManager.registerModule(dragonTickChange);
+    dragonTickChangeClient = moduleManager.registerModule(dragonTickChange)
 }
 
 // 脚本禁用时调用
 function onDisable() {
 
     // 注销
-    moduleManager.unregisterModule(dragonTickChangeClient);
+    moduleManager.unregisterModule(dragonTickChangeClient)
 }
