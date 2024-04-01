@@ -81,7 +81,7 @@ var JAVA_CLASS = {
 }
 
 // 选项的类型就这些 无需更改此
-/**定义 [ setting ] 对象 用于提供选项 */
+/**提供选项 */
 var setting = {
 
     /**
@@ -151,7 +151,7 @@ var setting = {
     }
 };
 
-/**定义 [ settings ] 对象 用于设置选项 */
+/**设置选项 */
 var settings = {
     round: setting.integer('round', 101, 1, 105),
     enableFeature: setting.boolean('enableFeature', false),
