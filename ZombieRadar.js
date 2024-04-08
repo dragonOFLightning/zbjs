@@ -1,7 +1,7 @@
 /**
  * DP = Dragon Plate
  * 
- * ZombieRadar僵尸雷达拥抱开源 由DP-龙界板块制造 冰龙开发 3dragons贡献 
+ * ZombieRadar僵尸雷达拥抱开源 由DP-龙界板块制造 冰龙之子开发 3dragons贡献 
  * 
  * 僵尸雷达功能
  *  - 在实体上方宣传名称
@@ -34,7 +34,7 @@ var scriptName = 'ZombieRadar'
 var scriptVersion = '2.0.0'
 
 /**定义脚本作者 */
-var scriptAuthor = ['ColdDragon']
+var scriptAuthor = ['dragonsocd']
 
 /**Minecraft服务器的网络数据包 */
 var SERVER_PACKET = {
@@ -441,7 +441,7 @@ function ZombieRadar() { }
 /**@override 模块名称*/
 ZombieRadar.prototype.getName = function () { return 'ZombieRadar' }
 /**@override 模块描述*/
-ZombieRadar.prototype.getDescription = function () { return 'ColdDragon' }
+ZombieRadar.prototype.getDescription = function () { return 'dragonsocd' }
 /**@override 模块类型*/
 ZombieRadar.prototype.getCategory = function () { return 'Fun' }
 /**@override */
