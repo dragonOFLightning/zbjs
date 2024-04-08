@@ -1,5 +1,5 @@
 /*
-    龙界板块制造
+    啊佳制造 TheGBJia开发
 
     快速切枪 但也只能 快速切枪 TG的意思就是to gun
     如你说见 这个脚本就是反复执行切换 不具备自适应的功能
@@ -13,7 +13,7 @@ var scriptName = 'FastChange-TG';
 var scriptVersion = '2.0.0';
 
 // 脚本作者
-var scriptAuthor = ['ColdDragon'];
+var scriptAuthor = ['QwQAJia'];
 
 // 定义 [ tick ] [ zapperTick ] 分别用于计数
 var tick, zapperTick;
@@ -48,7 +48,7 @@ function theFastChange() {
     };
     // 模块描述
     this.getDescription = function () {
-        return 'ColdDragon'
+        return 'QwQAJia'
     };
     // 模块分类
     this.getCategory = function () {

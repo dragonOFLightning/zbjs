@@ -7,7 +7,7 @@ var scriptName = 'PlayerList2D';
 var scriptVersion = '2.4.1'; // 产生了分支 当前分支版本是2.4.1而不是2.4.0
 
 // 定义脚本作者
-var scriptAuthor = ['ColdDragon'];
+var scriptAuthor = ['dragonsocd'];
 
 // 引入 [ Tools.js ] 脚本工具 用于获取工具渲染列表
 script.import('Tools.js');
@@ -76,7 +76,7 @@ function thePlayerList2D() {
 
     // 定义模块描述
     this.getDescription = function () {
-        return 'ColdDragon';
+        return 'dragonsocd';
     };
 
     // 定义模块归类

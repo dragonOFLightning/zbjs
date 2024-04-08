@@ -15,7 +15,7 @@ var scriptName = 'FastMap';
 var scriptVersion = '1.1.0';
 
 // 定义脚本的作者
-var scriptAuthor = ['ColdDragon'];
+var scriptAuthor = ['dragonsocd'];
 
 // 引入命令
 var LiquidBounce = Java.type('net.ccbluex.liquidbounce.LiquidBounce');
@@ -114,7 +114,7 @@ function theFastMap() {
     }
     // 定义模块描述
     this.getDescription = function () {
-        return 'ColdDragon'
+        return 'dragonsocd'
     }
     // 定义模块分类
     this.getCategory = function () {

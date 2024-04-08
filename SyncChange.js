@@ -11,7 +11,7 @@ var scriptName = 'SyncChange'
 var scriptVersion = '1.2.0'
 
 /**定义脚本作者 */
-var scriptAuthor = ['ColdDragon']
+var scriptAuthor = ['dragonsocd']
 
 /**提供选项 */
 var setting = {
@@ -97,7 +97,7 @@ function SyncChange() { }
 /**@override 模块名称*/
 SyncChange.prototype.getName = function () { return 'SyncChange' }
 /**@override 模块描述*/
-SyncChange.prototype.getDescription = function () { return 'ColdDragon' }
+SyncChange.prototype.getDescription = function () { return 'dragonsocd' }
 /**@override 模块类型*/
 SyncChange.prototype.getCategory = function () { return 'Fun' }
 /**@override */

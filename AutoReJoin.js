@@ -1,6 +1,6 @@
 /**
  * 此JS虽然远古 但没地方值得扩展了
- * 龙界板块制造
+ * 龙界板块制造 冰龙之子开发
  * 
  * 自动重进 给观察者或者帮开用的
  *  Normal模式 - 游戏开始后自动退出 随后重进
@@ -18,7 +18,7 @@ var scriptName = 'AutoReJoin';
 var scriptVersion = '2.1';
 
 // 定义脚本作者
-var scriptAuthor = ['ColdDragon'];
+var scriptAuthor = ['dragonsocd'];
 
 // 引入聊天数据包
 var S02PacketChat = Java.type('net.minecraft.network.play.server.S02PacketChat');
@@ -52,7 +52,7 @@ function TheAutoReJoin() {
 
     // 定义模块描述
     this.getDescription = function () {
-        return 'ColdDragon'
+        return 'dragonsocd'
     };
 
     // 定义模块分类
