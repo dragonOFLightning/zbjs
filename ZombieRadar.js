@@ -26,17 +26,12 @@
  * 
  * 依赖说明
  *  - DragonTool.jar 龙界板块制造 冰龙开发
- * 
- * 未来计划
- *  - 优化检测地图逻辑
- *  - 添加渲染眼睛高度线
- *  - 优化设置选项
  */
 /**定义脚本名称 */
 var scriptName = 'ZombieRadar'
 
 /**定义脚本版本 */
-var scriptVersion = '2.0.0'
+var scriptVersion = '2.1.0'
 
 /**定义脚本作者 */
 var scriptAuthor = ['dragonsocd']
@@ -54,6 +49,9 @@ var SERVER_PACKET = {
 var ENTITY = {
     /**实体 */
     Entity: Java.type('net.minecraft.entity.Entity'),
+
+    /**实体生物 */
+    EntityLivingBase: Java.type('net.minecraft.entity.EntityLivingBase'),
 }
 
 /**Minecraft的物品 */
@@ -95,7 +93,7 @@ var JAVA_CLASS = {
     File: Java.type('java.io.File'),
 
     /**线程 */
-    Thread: Java.type("java.lang.Thread"),
+    Thread: Java.type('java.lang.Thread'),
 }
 
 /**僵尸实体类型 */
@@ -163,12 +161,15 @@ var settings = {
     /**渲染实体框 */
     outline: setting.boolean('Outline', true),
 
+    /**渲染眼睛线 */
+    eyeLine: setting.boolean('EyeLine', true),
+
     /**渲染准星线 */
     tracer: setting.boolean('Tracer', true),
 
     /**渲染位置 */
     renderX: setting.integer('RenderX', 960, 0, 2000),
-    renderY: setting.integer('RenderY', 2, 0, 1080),
+    renderY: setting.integer('RenderY', 2, 0, 1090),
 
     // 重置颜色
     resetColor: setting.boolean('ResetColor', false),
@@ -350,6 +351,9 @@ var DT = {
 
     /**渲染准星线 */
     RenderTracerLine: DragonToolsClass.loadClass('tk.tools.RenderTracerLine'),
+
+    /**渲染眼睛线 */
+    RenderEntityEye: DragonToolsClass.loadClass('tk.tools.RenderEntityEye'),
 }
 
 // DT工具中的渲染实体边框 参数是1个Entity类型 1个Color类型
@@ -358,6 +362,8 @@ var renderEntity = DT.RenderBox.getDeclaredMethod('renderEntity', ENTITY.Entity.
 // DT工具中的渲染准星线 参数是1个Entity类型 默认颜色红色
 var renderTracerLine = DT.RenderTracerLine.getDeclaredMethod('renderTracerLine', ENTITY.Entity.class)
 
+// DT中举中的渲染眼睛线 参数是1个Entity类型 默认颜色红色
+var render = DT.RenderEntityEye.getDeclaredMethod('render', ENTITY.EntityLivingBase.class)
 /**
  * @function ZombieRadar_onRender2D 监听到渲染3D事件时调用
  * @param {net.ccbluex.liquidbounce.event.Render3DEvent} event 
@@ -419,6 +425,7 @@ function ZombieRadar_onRender3D(event) {
             settings.outline.get() && renderEntity.invoke(null, zombie, perilousColor)
             var needTracer = settings.tracer.get() && perilousType.indexOf('Giant') === -1
             needTracer && renderTracerLine.invoke(null, zombie)
+            settings.eyeLine.get() && render.invoke(null, zombie)
             continue
         }
 
@@ -426,6 +433,7 @@ function ZombieRadar_onRender3D(event) {
         var isDangerousZombie = zombie.getMaxHealth() > 249
         if (isDangerousZombie) {
             settings.outline.get() && renderEntity.invoke(null, zombie, dangerousColor)
+            settings.eyeLine.get() && render.invoke(null, zombie)
             continue
         }
 
@@ -433,11 +441,13 @@ function ZombieRadar_onRender3D(event) {
         var isWave1Zombie = wave1ZombieTypeList.indexOf(zombie) !== -1
         if (isWave1Zombie) {
             settings.outline.get() && renderEntity.invoke(null, zombie, wave1Color)
+            settings.eyeLine.get() && render.invoke(null, zombie)
             continue
         }
 
         // 渲染常规僵尸逻辑
         settings.outline.get() && renderEntity.invoke(null, zombie, defaultColor)
+        settings.eyeLine.get() && render.invoke(null, zombie)
     }
 }
 
@@ -622,9 +632,7 @@ function getPerilousZombieType(entity) {
         var isBroodMother = false
 
         // 当实体的足部没有穿装备时会得到null null再调用getUnlocalizedName()则会得到TypeError
-        try {
-            isBroodMother = entity.getInventory()[0].getUnlocalizedName() === 'item.bootsGold'
-        } catch (error) { }
+        try { isBroodMother = entity.getInventory()[0].getUnlocalizedName() === 'item.bootsGold' } catch (error) { }
 
         // 如果是巢穴之母
         if (isBroodMother) {
@@ -722,12 +730,12 @@ function createZombiesMapUpdateTask() {
         run: function () {
 
             // 固定选取的一个坐标
-            var pos = new UTIL.BlockPos(18, 66, 28)
+            var pos = new UTIL.BlockPos(21, 66, 66)
 
             // 获取这个坐标上的名称
-            var blockName = mc.theWorld.getBlockState(pos).getBlock().getRegistryName().toString().split(":")[1]
+            var blockName = mc.theWorld.getBlockState(pos).getBlock().getRegistryName().toString().split(':')[1]
 
-            var maps = { 'stained_hardened_clay': 1, 'air': 2, 'stone': 3 }
+            var maps = { 'wool': 1, 'air': 2, 'stone': 3 }
 
             // 根据特定坐标的方块名称判断地图
             zombiesMap = maps[blockName] || 0
