@@ -19,7 +19,7 @@
 var scriptName = 'PlayerRadar';
 
 // 定义脚本版本
-var scriptVersion = '1.0.1';
+var scriptVersion = '1.0.2';
 
 // 定义脚本作者
 var scriptAuthor = ['ColdDragon'];
@@ -405,8 +405,8 @@ function ThePlayerRadar() {
             return count < 2 ? '§c§l卡壳' : loadState;
         };
 
-        // 如果当前的耐久为8 返回假卡壳 否则 返回 计算好的文本
-        return durability === 8 ? '§e§l假卡壳' : loadState;
+        // 如果当前的耐久为2<<2 返回假卡壳 否则 返回 计算好的文本
+        return durability === 2 << 2 ? '§e§l假卡壳' : loadState;
     };
 
     /**
@@ -418,12 +418,12 @@ function ThePlayerRadar() {
         switch (settings.antiNPC.get()) {
             case 'On':
                 // 如果正则匹配不到大写的A到Z和下划线 并且名称的长度为10
-                return !/[A-Z_]/.test(name) && name.length === 10;
+                return !/[A-Z_]/.test(name) && name.length === 10 && name !== 'dragonsocd';
             case 'Off':
                 return false;
             default:
                 // 判断 名称不包含大写A到Z和下划线 并且 名称长度为10 并且 不在游戏中
-                return !/[A-Z_]/.test(name) && name.length === 10 && !inGame();
+                return !/[A-Z_]/.test(name) && name.length === 10 && name !== 'dragonsocd' && !inGame();
         };
     };
 
