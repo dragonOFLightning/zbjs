@@ -1,12 +1,39 @@
-// 当前版本没有文档 敬请期待2.0.0版本 1.0.0在实验室中夭折了
+/**
+ * 龙界板块制造 冰龙开发 3dragons贡献
+ * 
+ * 当前脚本功能较少 推荐使用ZombieRadarLab
+ * 
+ * ZombieRadar 僵尸雷达 稳定版
+ * 
+ * 僵尸雷达功能
+ *  - 在实体上方宣传名称
+ * 
+ *  - 渲染实体填充框
+ * 
+ *  - 右上渲染2D极度僵尸详细信息
+ * 
+ *  - 渲染极度危险僵尸的准星线
+ * 
+ * 认为是极度危险的怪中 只有巨人不会被画准星线 以下是被认为极度危险的怪物
+ *  - HeroBrine - 长者 - 巨人 -
+ * 
+ * 僵尸雷达特性
+ * 
+ * - 使用英文语言可以正常运行
+ * 
+ * - 使用其他语言会出现渲染名称bug[不可修复]
+ * 
+ * 代码说明
+ *  - 使用旧架构 可能会导致可读性略差
+ */
 
-// 定义脚本名称
+/**脚本名称 */
 var scriptName = 'ZombiesRadar';
 
-// 定义脚本版本
+/**脚本版本 */
 var scriptVersion = '0.2.1';
 
-// 定义脚本作者
+/**脚本作者 */
 var scriptAuthor = ['ColdDragon'];
 
 // 定义 [ ItemSword ] 并引入mc的物品的剑类型 Class
@@ -456,7 +483,7 @@ function ZombieRadar() {
         try {
             // 判断一下是否拿剑
             takeSword = theEntity.getHeldItem().getItem() instanceof ItemSword;
-        } catch (error) {};
+        } catch (error) { };
 
         // 是否是长者 实体僵尸 并且 小僵尸 并且 总血量 > 429 并且 拿剑
         var isTheOldOne = theEntity instanceof ZombiesEntity.EntityZombie && theEntity.getEyeHeight() < 1 && theEntity.getMaxHealth() > 249 && takeSword;
@@ -486,7 +513,7 @@ function ZombieRadar() {
         try {
             // 尝试获取抓中的物品 并判断是否是 物品剑
             takeSword = theEntity.getHeldItem().getItem() instanceof ItemSword;
-        } catch (error) {};
+        } catch (error) { };
 
         // 疑似长者或者Herobrine
         if (theEntity instanceof ZombiesEntity.EntityZombie) {
