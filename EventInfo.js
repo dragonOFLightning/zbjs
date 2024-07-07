@@ -252,12 +252,14 @@ function TheEventInfo() {
         // 如果包的类型是 [ S02PacketChat ]
         if (thePacket instanceof S02PacketChat) {
 
-            if (thePacket.getChatComponent().getUnformattedText().contains('EI-NO 3rd')) {
+            var chat = thePacket.getChatComponent().getUnformattedText()
+
+            if (chat.contains('EI-NO 3rd')) {
                 settings.renderChange.set(true);
                 return;
             }
 
-            if (thePacket.getChatComponent().getUnformattedText().contains('EI-3rd')) {
+            if (chat.contains('EI-3rd')) {
                 settings.renderChange.set(false);
                 return;
             }
@@ -269,7 +271,7 @@ function TheEventInfo() {
             if (thePacket.getType() !== 2) {
 
                 // 获取聊天文本 @java.lang.String
-                chatText = thePacket.getChatComponent().getUnformattedText();
+                chatText = chat
             };
 
             // 检测文本包含关键词 或者与上一个重复 因为函数只有return 所以不能在函数中判断
