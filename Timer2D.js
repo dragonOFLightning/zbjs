@@ -122,15 +122,17 @@ function theTimer2D() {
         // 如果 [ thePacket ] 类型是 [ S02PacketChat ]
         if (thePacket instanceof S02PacketChat) {
 
+            var chat = thePacket.getChatComponent().getUnformattedText();
+
             // 如果检测到聊天中有字符串 [ 'coins!' ]
-            if (thePacket.getChatComponent().getUnformattedText().contains('coins!')) {
+            if (chat.contains('coins!')) {
 
                 // 重置计时器
                 tick = 0; theNumberSecond = 0; theStringMinute = '00'; theNumberHour = 0; theNumberMinute = '00'; theStringHour = '00';
 
             }
             // 如果检测到聊天中有字符串 [ 'The game starts in 1 second!' ]
-            if (thePacket.getChatComponent().getUnformattedText().contains('The game starts in 1 second!')) {
+            if (chat.contains('The game starts in 1 second!')) {
 
                 // 重置计时器但 [ tick ] 为-20
                 tick = -20; theNumberSecond = 0; theStringMinute = '00'; theNumberHour = 0; theNumberMinute = '00'; theStringHour = '00';
