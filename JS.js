@@ -78,6 +78,15 @@ var JAVA_CLASS = {
 
     /**计时器任务类 */
     TimerTask: Java.type('java.util.TimerTask'),
+
+    /**类加载器 */
+    URLClassLoader: Java.type('java.net.URLClassLoader'),
+
+    /**文件 */
+    File: Java.type('java.io.File'),
+
+    /**线程 */
+    Thread: Java.type('java.lang.Thread'),
 }
 
 // 选项的类型就这些 无需更改此
