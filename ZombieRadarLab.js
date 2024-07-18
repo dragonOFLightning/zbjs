@@ -178,6 +178,18 @@ var settings = {
     /**渲染准星线 */
     tracer: setting.boolean('Tracer', true),
 
+    /**渲染常规僵尸 */
+    renderNormal: setting.boolean('Normal', true),
+
+    /**渲染危险僵尸 */
+    renderDangerous: setting.boolean('Danger', true),
+
+    /**渲染第一波僵尸 */
+    renderWave1: setting.boolean('Wave1', true),
+
+    /**渲染极度危险僵尸 */
+    renderPerilous: setting.boolean('Perilous', true),
+
     /**渲染位置 */
     renderX: setting.integer('RenderX', 960, 0, 2000),
     renderY: setting.integer('RenderY', 2, 0, 1090),
@@ -280,15 +292,17 @@ function ZombieRadarLab_onPacket(event) {
         if (titleText.contains('Round')) {
 
             /// 获取wave1的类型逻辑
-            doGetWave1Task = new JAVA_CLASS.TimerTask({
-                /**@override */
-                run: function () {
-                    wave1ZombieTypeList = zombieList // 此处定义域层数好多
-                }
-            })
+            if (settings.renderWave1.get()) {
+                doGetWave1Task = new JAVA_CLASS.TimerTask({
+                    /**@override */
+                    run: function () {
+                        wave1ZombieTypeList = zombieList // 此处定义域层数好多
+                    }
+                })
 
-            var spawnWave1FinishTime = 11e3
-            timer.schedule(doGetWave1Task, spawnWave1FinishTime)
+                var spawnWave1FinishTime = 11e3
+                timer.schedule(doGetWave1Task, spawnWave1FinishTime)
+            }
 
             /// 获取当前round逻辑
             var start = titleText.indexOf('Round') + 'Round'.length
@@ -394,26 +408,27 @@ function ZombieRadarLab_onRender3D(event) {
 
         // 渲染极度危险僵尸逻辑
         var perilousType = getPerilousZombieType(zombie)
-        if (perilousType) {
+        if (perilousType && settings.renderPerilous.get()) {
             renderZombie3D(zombie, perilousColor)
             continue
         }
 
         // 渲染危险僵尸逻辑
         var isDangerousZombie = zombie.getMaxHealth() > 249
-        if (isDangerousZombie) {
+        if (isDangerousZombie && settings.renderDangerous.get()) {
             renderZombie3D(zombie, dangerousColor)
             continue
         }
 
         // 渲染第一波僵尸逻辑
         var isWave1Zombie = wave1ZombieTypeList.indexOf(zombie) !== -1
-        if (isWave1Zombie) {
+        if (isWave1Zombie && settings.renderWave1.get()) {
             renderZombie3D(zombie, wave1Color)
             continue
         }
 
         // 渲染常规僵尸逻辑
+        if (!settings.renderNormal.get()) return
         renderZombie3D(zombie, defaultColor)
     }
 
@@ -432,7 +447,7 @@ function ZombieRadarLab_onRender3D(event) {
 
         // 渲染极度危险僵尸逻辑
         var perilousType = getPerilousZombieType(zombie)
-        if (perilousType) {
+        if (perilousType && settings.renderNormal.get()) {
             settings.outline.get() && renderEntity.invoke(null, zombie, perilousColor)
             var needTracer = settings.tracer.get() && perilousType.indexOf('Giant') === -1
             needTracer && renderTracerLine.invoke(null, zombie)
@@ -442,7 +457,7 @@ function ZombieRadarLab_onRender3D(event) {
 
         // 渲染危险僵尸逻辑
         var isDangerousZombie = zombie.getMaxHealth() > 249
-        if (isDangerousZombie) {
+        if (isDangerousZombie && settings.renderDangerous.get()) {
             settings.outline.get() && renderEntity.invoke(null, zombie, dangerousColor)
             settings.eyeLine.get() && render.invoke(null, zombie)
             continue
@@ -450,13 +465,14 @@ function ZombieRadarLab_onRender3D(event) {
 
         // 渲染第一波僵尸逻辑
         var isWave1Zombie = wave1ZombieTypeList.indexOf(zombie) !== -1
-        if (isWave1Zombie) {
+        if (isWave1Zombie && settings.renderNormal.get()) {
             settings.outline.get() && renderEntity.invoke(null, zombie, wave1Color)
             settings.eyeLine.get() && render.invoke(null, zombie)
             continue
         }
 
         // 渲染常规僵尸逻辑
+        if (!settings.renderNormal.get()) return
         settings.outline.get() && renderEntity.invoke(null, zombie, defaultColor)
         settings.eyeLine.get() && render.invoke(null, zombie)
     }
