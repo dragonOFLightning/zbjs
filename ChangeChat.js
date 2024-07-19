@@ -618,7 +618,7 @@ function TheChangeChat() {
             'ms': 'Mansion',
             'apt': 'Apartment',
             'o1': 'The Old One',
-            'ss': 'Shopping Surging',
+            'ss': 'Shopping Spree',
             'lr': 'Lightning Rod',
             'pc': 'Perk Corner',
             'lib': 'Library',
