@@ -414,7 +414,8 @@ function ZombieRadarLab_onRender3D(event) {
         }
 
         // 渲染危险僵尸逻辑
-        var isDangerousZombie = zombie.getMaxHealth() > 249
+        var isDangerousZombie = zombie.getMaxHealth() > 249 &&
+            !(zombie instanceof ZombiesEntity.EntitySlime || zombie instanceof ZombiesEntity.EntityMagmaCube)
         if (isDangerousZombie && settings.renderDangerous.get()) {
             renderZombie3D(zombie, dangerousColor)
             continue
