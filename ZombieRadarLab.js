@@ -388,7 +388,7 @@ var renderEntity = DT.RenderBox.getDeclaredMethod('renderEntity', ENTITY.Entity.
 var renderTracerLine = DT.RenderTracerLine.getDeclaredMethod('renderTracerLine', ENTITY.Entity.class)
 
 // DT中举中的渲染眼睛线 参数是1个Entity类型 默认颜色红色
-var render = DT.RenderEntityEye.getDeclaredMethod('render', ENTITY.EntityLivingBase.class)
+var render = DT.RenderEntityEye.getDeclaredMethod('renderEyeLine', ENTITY.EntityLivingBase.class)
 /**
  * @function ZombieRadarLab_onRender2D 监听到渲染3D事件时调用
  * @param {net.ccbluex.liquidbounce.event.Render3DEvent} event 
@@ -429,7 +429,7 @@ function ZombieRadarLab_onRender3D(event) {
         }
 
         // 渲染常规僵尸逻辑
-        if (!settings.renderNormal.get()) return
+        if (!settings.renderNormal.get()) continue
         renderZombie3D(zombie, defaultColor)
     }
 
@@ -448,7 +448,7 @@ function ZombieRadarLab_onRender3D(event) {
 
         // 渲染极度危险僵尸逻辑
         var perilousType = getPerilousZombieType(zombie)
-        if (perilousType && settings.renderNormal.get()) {
+        if (perilousType && settings.renderPerilous.get()) {
             settings.outline.get() && renderEntity.invoke(null, zombie, perilousColor)
             var needTracer = settings.tracer.get() && perilousType.indexOf('Giant') === -1
             needTracer && renderTracerLine.invoke(null, zombie)
@@ -466,14 +466,14 @@ function ZombieRadarLab_onRender3D(event) {
 
         // 渲染第一波僵尸逻辑
         var isWave1Zombie = wave1ZombieTypeList.indexOf(zombie) !== -1
-        if (isWave1Zombie && settings.renderNormal.get()) {
+        if (isWave1Zombie && settings.renderWave1.get()) {
             settings.outline.get() && renderEntity.invoke(null, zombie, wave1Color)
             settings.eyeLine.get() && render.invoke(null, zombie)
             continue
         }
 
         // 渲染常规僵尸逻辑
-        if (!settings.renderNormal.get()) return
+        if (!settings.renderNormal.get()) continue
         settings.outline.get() && renderEntity.invoke(null, zombie, defaultColor)
         settings.eyeLine.get() && render.invoke(null, zombie)
     }
