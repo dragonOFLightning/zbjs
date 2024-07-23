@@ -42,7 +42,7 @@
 var scriptName = 'ZombieRadarLab'
 
 /**脚本版本 */
-var scriptVersion = '2.1.0'
+var scriptVersion = '2.1.1'
 
 /**脚本作者 */
 var scriptAuthor = ['dragonsocd']
