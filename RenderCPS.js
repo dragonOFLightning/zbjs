@@ -6,13 +6,15 @@
  *  - 统计你每秒点击的次数 此脚本统计的是与方块互动的次数 也就是你的放置次数
  *  - 此脚本允许您通过修改设置以自定义渲染的位置和渲染的颜色
  *  - 这里所说的每秒点击次数 实质是你每秒与方块互动的次数
+ * 
+ * 彩蛋: 在单机模式下可能会测出二倍的CPS值
  */
 
 /**@constant 脚本名称 */
 var scriptName = 'RenderCPS'
 
 /**@constant 脚本版本 */
-var scriptVersion = '1.0.0'
+var scriptVersion = '1.0.1'
 
 /**@constant 脚本作者 */
 var scriptAuthor = ['ColdDragon']
