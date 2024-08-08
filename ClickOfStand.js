@@ -17,7 +17,7 @@
 var scriptName = 'ClickOfStand'
 
 /**@constant 脚本版本 */
-var scriptVersion = '0.0.1'
+var scriptVersion = '0.0.2'
 
 /**@constant 脚本作者 */
 var scriptAuthor = ['kuukirikigaku']
@@ -201,16 +201,17 @@ function getTargetStand() {
 }
 
 /**
- * 
+ * @constant {function} getArmorStandEntityArray 获取盔甲架实体数据数组
  * @returns {Array<CloseArmorStand>}
  */
 function getArmorStandEntityArray() {
+   /**@constant {Array<CloseArmorStand>} 盔甲架实体数据数组*/
    var armorStandEntityArray = []
 
-   /**世界实体 */
+   /**@constant {java.util.List<net.minecraft.entity.Entity>} 世界实体*/
    var worldEntity = mc.theWorld.loadedEntityList
 
-   /**玩家角色 */
+   /**@constant {net.minecraft.client.entity.EntityPlayerSP} 玩家角色*/
    var player = mc.thePlayer
 
    /// 玩家角色的位置
@@ -219,10 +220,10 @@ function getArmorStandEntityArray() {
    var z1 = player.posZ
 
    // 遍历世界实体
-   for (var i in worldEntity) {
+   for (var index = 0; i < worldEntity.size(); i++) {
 
       /**@constant @type {net.minecraft.entity.Entity} 实体*/
-      var entity = worldEntity[i]
+      var entity = worldEntity[index]
 
       // 如果实体不为盔甲架
       if (!(entity instanceof ENTITY.EntityArmorStand)) continue
