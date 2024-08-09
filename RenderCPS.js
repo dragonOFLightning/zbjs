@@ -104,7 +104,7 @@ function RenderCPS() { }
 /**@override @constant {string} 模块名称 */
 RenderCPS.prototype.getName = function () { return 'RenderCPS' }
 /**@override @constant {string} 模块描述 */
-RenderCPS.prototype.getDescription = function () { return 'yourName' }
+RenderCPS.prototype.getDescription = function () { return 'ColdDragon' }
 /**@override @constant {string} 模块类型 */
 RenderCPS.prototype.getCategory = function () { return 'Fun' }
 /**@override @constant {function} */
