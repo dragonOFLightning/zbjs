@@ -17,7 +17,7 @@
 var scriptName = 'ClickOfStand'
 
 /**@constant 脚本版本 */
-var scriptVersion = '0.0.2'
+var scriptVersion = '0.0.3'
 
 /**@constant 脚本作者 */
 var scriptAuthor = ['kuukirikigaku']
@@ -130,7 +130,7 @@ function ClickOfStand() { }
 /**@override @constant {string} 模块名称 */
 ClickOfStand.prototype.getName = function () { return 'ClickOfStand' }
 /**@override @constant {string} 模块描述 */
-ClickOfStand.prototype.getDescription = function () { return 'yourName' }
+ClickOfStand.prototype.getDescription = function () { return 'kuukirikigaku' }
 /**@override @constant {string} 模块类型 */
 ClickOfStand.prototype.getCategory = function () { return 'Fun' }
 /**@override @constant {function} */
