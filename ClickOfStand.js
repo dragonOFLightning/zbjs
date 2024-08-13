@@ -220,7 +220,7 @@ function getArmorStandEntityArray() {
    var z1 = player.posZ
 
    // 遍历世界实体
-   for (var index = 0; i < worldEntity.size(); i++) {
+   for (var index = 0; index < worldEntity.size(); index++) {
 
       /**@constant @type {net.minecraft.entity.Entity} 实体*/
       var entity = worldEntity[index]
