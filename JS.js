@@ -1,94 +1,128 @@
-/**@constant 脚本名称 */
+
+/**@constant @readonly @type {string} 脚步名称 */
 var scriptName = 'JS'
 
-/**@constant 脚本版本 */
+/** @constant @readonly @type {string} 脚本版本 */
 var scriptVersion = '1.0.0'
 
-/**@constant 脚本作者 */
+/***@constant @readonly @type {Array<string>} 脚本作者*/
 var scriptAuthor = ['yourName']
 
-/**@constant Minecraft客户端的网络数据包 */
-var CLIENT_PACKET = {
-   /**@constant 客户端放置数据包类型 */
+/**
+ * @description CP = Client Packet
+ * @constant
+ * @readonly
+ * @description 我的世界网络通讯客户端发向服务端的数据包
+ */
+var CP = {
+   /**@constant @readonly @description 放置方块 */
    C08PacketPlayerBlockPlacement: Java.type('net.minecraft.network.play.client.C08PacketPlayerBlockPlacement'),
 
-   /**@constant 客户端挖掘数据包类型 */
+   /**@constant @readonly @description 挖掘 */
    C07PacketPlayerDigging: Java.type('net.minecraft.network.play.client.C07PacketPlayerDigging'),
 
-   /**@constant 客户端聊天数据包类型 */
+   /**@constant @readonly @description 聊天 */
    C01PacketChatMessage: Java.type('net.minecraft.network.play.client.C01PacketChatMessage'),
 }
 
-/**@constant Minecraft服务器的网络数据包 */
-var SERVER_PACKET = {
-   /**@constant 服务器聊天数据包类型 */
+/**
+ * @description SP = Server Packet
+ * @constant
+ * @readonly
+ * @description 我的世界网络通讯服务端发向客户端的数据包
+ */
+var SP = {
+   /**@constant @readonly @description 聊天 */
    S02PacketChat: Java.type('net.minecraft.network.play.server.S02PacketChat'),
 
-   /**@constant 世界时间数据包类型 */
+   /**@constant @readonly @description 时间更新 */
    S03PacketTimeUpdate: Java.type('net.minecraft.network.play.server.S03PacketTimeUpdate'),
 
-   /**@constant 服务器标题数据包类型 */
+   /**@constant @readonly @description 标题 */
    S45PacketTitle: Java.type('net.minecraft.network.play.server.S45PacketTitle'),
 
-   /**@constant 动画数据包类型 */
+   /**@constant @readonly @description 动画 */
    S0BPacketAnimation: Java.type('net.minecraft.network.play.server.S0BPacketAnimation'),
 }
 
-/**@constant Minecraft的实体 */
-var ENTITY = {
-   /**@constant 实体盔甲架类型 */
+/**
+ * @description 全部继承自abstract class net.minecraft.entity.Entity
+ * @constant
+ * @readonly
+ * @description 我的世界实体
+ */
+var Entity = {
+   /**@constant @readonly @description 盔甲架 */
    EntityArmorStand: Java.type('net.minecraft.entity.item.EntityArmorStand'),
 
-   /**@constant 实体玩家类型 */
+   /**@constant @readonly @description 玩家 */
    EntityPlayer: Java.type('net.minecraft.entity.player.EntityPlayer'),
 }
 
-/**@constant Minecraft的物品 */
-var ITEM = {
-   /**@constant 物品剑类型 */
+/**
+ * @description 全部继承自class net.minecraft.item.Item
+ * @constant
+ * @readonly
+ * @description 我的世界物品
+ */
+var Item = {
+   /**@constant @readonly @description 剑 */
    ItemSword: Java.type('net.minecraft.item.ItemSword'),
 }
 
-/**@constant Minecraft的工具 */
-var UTIL = {
-   /**@constant 实体或方块边界框类型 */
+/**
+ * @description 全部位于package net.minecraft.util
+ * @constant
+ * @readonly
+ * @description 我的世界工具
+ */
+var Util = {
+   /**@constant @readonly @description 轴对称边界框 */
    AxisAlignedBB: Java.type('net.minecraft.util.AxisAlignedBB'),
 
-   /**@constant 方块朝向枚举类型 */
+   /**@constant @readonly @description 方块方向朝向 */
    EnumFacing: Java.type('net.minecraft.util.EnumFacing'),
 
-   /**@constant 方块坐标类型 */
+   /**@constant @readonly @description 方块位置 */
    BlockPos: Java.type('net.minecraft.util.BlockPos'),
 }
 
-/**@constant CCBlueX的内置Java类 */
-var CCBLUEX = {
-   /**@constant CCBlueX的渲染引擎 */
+/**
+ * @constant
+ * @readonly
+ * @description CCBlueX的依赖
+ */
+var CCBlueX = {
+   /**@constant @readonly @description 渲染引擎 */
    RenderUtils: Java.type('net.ccbluex.liquidbounce.utils.render.RenderUtils'),
 }
 
-/**@constant 原生的Java类 */
-var JAVA_CLASS = {
-   /**@constant 颜色类 */
+/**
+ * @constant
+ * @readonly
+ * @description Java标准依赖
+ */
+var JavaClass = {
+   /**@constant @readonly @description 颜色类 */
    Color: Java.type('java.awt.Color'),
 
-   /**@constant 计时器类 */
+   /**@constant @readonly @description 计时器类 */
    Timer: Java.type('java.util.Timer'),
 
-   /**@constant 计时器任务类 */
+   /**@constant @readonly @description 计时器任务类 */
    TimerTask: Java.type('java.util.TimerTask'),
 
-   /**@constant 类加载器 */
+   /**@constant @readonly @description 类加载器 */
    URLClassLoader: Java.type('java.net.URLClassLoader'),
 
-   /**@constant 文件 */
+   /**@constant @readonly @description 文件 */
    File: Java.type('java.io.File'),
 
-   /**@constant 线程 */
+   /**@constant @readonly @description 线程 */
    Thread: Java.type('java.lang.Thread'),
 }
 
-/**@constant 提供选项 */
+/**@constant @readonly @description 提供选项 */
 var setting = {
 
    /**
@@ -158,7 +192,7 @@ var setting = {
    }
 }
 
-/**@constant 设置选项 */
+/**@constant @readonly @description 设置选项 */
 var settings = {
    round: setting.integer('round', 101, 1, 105),
    enableFeature: setting.boolean('enableFeature', false),
@@ -168,46 +202,45 @@ var settings = {
    description: setting.text('description', 'demo'),
 }
 
-// 生命周期函数的命名方式为 模块名_生命周期函数名
-/**@constant {function} JS_onEnable 模块启用时调用 */
-function JS_onEnable() { }
+/**@constant @type {function} @description 模块启用时调用 */
+function onEnable() { }
 
-/**@constant {function} JS_onUpdate 每tick调用 */
-function JS_onUpdate() { }
+/**@constant @type {function} @description 每刻调用 */
+function onUpdate() { }
 
-/**@constant {function} JS_onDisable 模块关闭时调用 */
-function JS_onDisable() { }
+/**@constant @type {function} @description 模块关闭时调用 */
+function onDisable() { }
 
 /**
- * @constant {function} JS_onPacket 监听到Packet事件时调用
- * @param {net.ccbluex.liquidbounce.event.PacketEvent} event 
+ * @constant @type {function} @description 监听到Packet事件时调用
+ * @param {net.ccbluex.liquidbounce.event.PacketEvent} event 数据包事件
  */
-function JS_onPacket(event) {
-   // 获取数据包
+function onPacket(event) {
+   /**@constant @readonly @type {net.minecraft.network.Packet<T extends net.minecraft.network.INetHandler>} 网络数据包*/
    var packet = event.getPacket()
 }
 
 /**
-* @constant {function} JS_onRender2D 监听到渲染2D事件时调用
-* @param {net.ccbluex.liquidbounce.event.Render2DEvent} event 
+* @constant @type {function} @description 监听到渲染2D事件时调用
+* @param {net.ccbluex.liquidbounce.event.Render2DEvent} _event 渲染2D事件
 */
-function JS_onRender2D(event) {
+function onRender2D(_event) {
    // 在x=9 y=200的位置渲染颜色为[0x00ffff]的文本[至尊神龙]带阴影[true]
    mc.fontRendererObj.drawString('至尊神龙', 9, 200, 0xFFA500, true)
 }
 
 /**
- * @constant {function} JS_onRender2D 监听到渲染3D事件时调用
- * @param {net.ccbluex.liquidbounce.event.Render3DEvent} event 
+ * @constant @type {function} @description 监听到渲染3D事件时调用
+ * @param {net.ccbluex.liquidbounce.event.Render3DEvent} _event 渲染3D事件
  */
-function JS_onRender3D(event) {
+function onRender3D(_event) {
    // 在特定位置渲染三维的文本
-   CCBLUEX.RenderUtils.renderNameTag('hello world', 100, 100, -100);
+   CCBlueX.RenderUtils.renderNameTag('hello world', 100, 100, -100);
 
    // 在相对位置渲染三维的方框
-   var color = new JAVA_CLASS.Color(30, 170, 255, 50)
-   var box = new UTIL.AxisAlignedBB(-.5, 4, -.5, .5, 3, .5)
-   CCBLUEX.RenderUtils.drawAxisAlignedBB(box, color)
+   var color = new JavaClass.Color(30, 170, 255, 50)
+   var box = new Util.AxisAlignedBB(-.5, 4, -.5, .5, 3, .5)
+   CCBlueX.RenderUtils.drawAxisAlignedBB(box, color)
 
    // 在绝对位置渲染三维的方框
    var renderManager = mc.getRenderManager();
@@ -217,64 +250,64 @@ function JS_onRender3D(event) {
    var x2 = 101 - renderManager.renderPosX
    var y2 = 61 - renderManager.renderPosY
    var z2 = -101 - renderManager.renderPosZ
-   var box = new UTIL.AxisAlignedBB(x1, y1, z1, x2, y2, z2)
-   CCBLUEX.RenderUtils.drawAxisAlignedBB(box, color)
+   var box = new Util.AxisAlignedBB(x1, y1, z1, x2, y2, z2)
+   CCBlueX.RenderUtils.drawAxisAlignedBB(box, color)
 }
 
 /**
- * @constant {function} JS_onAttack 监听到攻击事件时调用
- * @param {net.ccbluex.liquidbounce.event.AttackEvent} event 
+ * @constant @type {function} @description 监听到攻击事件时调用
+ * @param {net.ccbluex.liquidbounce.event.AttackEvent} event 攻击事件
  */
-function JS_onAttack(event) {
-   // 获取攻击的目标实体
+function onAttack(event) {
+   /**@constant @readonly @type {net.minecraft.entity.Entity} 目标实体 */
    var targetEntity = event.getTargetEntity()
 }
 
 /**
- * @constant {function} JS_onKey 监听到按键事件时调用
- * @param {net.ccbluex.liquidbounce.event.KeyEvent} event 
+ * @constant @type {function} @description 监听到按键事件时调用
+ * @param {net.ccbluex.liquidbounce.event.KeyEvent} event 按键事件
  */
-function JS_onKey(event) {
-   // 获取按下的键的ID
+function onKey(event) {
+   /**@constant @readonly @type {java.lang.Integer} 按下的键的值 */
    var keyID = event.getKey()
 }
 
 /**
- * @constant {function} JS_onClickBlock 监听到点击方块事件时调用
- * @param {net.ccbluex.liquidbounce.event.ClickBlockEvent} event 
+ * @constant {function} @description 监听到点击方块事件时调用
+ * @param {net.ccbluex.liquidbounce.event.ClickBlockEvent} event 点击方块事件
  */
-function JS_onClickBlock(event) {
-   // 获取点击的方块
+function onClickBlock(event) {
+   /**@constant @readonly @type {net.minecraft.util.BlockPos} 点击的方块 */
    var block = event.getClickedBlock()
 }
 
 /**@constant {class, function} JS 模块构造函数*/
 function JS() { }
-/**@override @constant {string} 模块名称 */
-JS.prototype.getName = function () { return 'JS' }
-/**@override @constant {string} 模块描述 */
-JS.prototype.getDescription = function () { return 'yourName' }
-/**@override @constant {string} 模块类型 */
+/**@override @constant @returns {string} 模块名称 */
+JS.prototype.getName = function () { return scriptName }
+/**@override @constant @returns {string} 模块描述 */
+JS.prototype.getDescription = function () { return 'your description' }
+/**@override @constant @returns {string} 模块类型 */
 JS.prototype.getCategory = function () { return 'Fun' }
-/**@override @constant {function} */
-JS.prototype.onEnable = JS_onEnable
-/**@override @constant {function} */
-JS.prototype.onUpdate = JS_onUpdate
-/**@override @constant {function} */
-JS.prototype.onDisable = JS_onDisable
-/**@override @constant {function} */
-JS.prototype.onPacket = JS_onPacket
-/**@override @constant {function} */
-JS.prototype.onRender2D = JS_onRender2D
-/**@override @constant {function} */
-JS.prototype.onRender3D = JS_onRender3D
-/**@override @constant {function} */
-JS.prototype.onAttack = JS_onAttack
-/**@override @constant {function} */
-JS.prototype.onKey = JS_onKey
-/**@override @constant {function} */
-JS.prototype.onClickBlock = JS_onClickBlock
-/**@override @constant {function} 覆写添加值函数 用于给模块添加选项*/
+/**@override @constant */
+JS.prototype.onEnable = onEnable
+/**@override @constant */
+JS.prototype.onUpdate = onUpdate
+/**@override @constant */
+JS.prototype.onDisable = onDisable
+/**@override @constant */
+JS.prototype.onPacket = onPacket
+/**@override @constant */
+JS.prototype.onRender2D = onRender2D
+/**@override @constant */
+JS.prototype.onRender3D = onRender3D
+/**@override @constant */
+JS.prototype.onAttack = onAttack
+/**@override @constant */
+JS.prototype.onKey = onKey
+/**@override @constant */
+JS.prototype.onClickBlock = onClickBlock
+/**@override @constant 覆写添加值函数 用于给模块添加选项*/
 JS.prototype.addValues = function (values) {
    for (var key in settings) {
       values.add(settings[key])
@@ -282,8 +315,8 @@ JS.prototype.addValues = function (values) {
 }
 
 /**
- * @constant {function} getDistanceSQ 用于计算三维空间中二点之间的距离
- * @function getDistanceSQ 纯函数
+ * @constant {function} getEuclideanDistanceSQ 用于计算三维空间中二点之间的距离
+ * @function getEuclideanDistanceSQ 纯函数
  * @param {number} x1 第一个点的 x 坐标
  * @param {number} y1 第一个点的 y 坐标
  * @param {number} z1 第一个点的 z 坐标
@@ -292,11 +325,15 @@ JS.prototype.addValues = function (values) {
  * @param {number} z2 第二个点的 z 坐标
  * @returns {number} 欧几里平方
  */
-function getDistanceSQ(x1, y1, z1, x2, y2, z2) {
-
-   // 计算差值
+function getEuclideanDistanceSQ(x1, y1, z1, x2, y2, z2) {
+   /// 计算差值
+   /**@constant @readonly */
    var x = x2 - x1
+
+   /**@constant @readonly */
    var y = y2 - y1
+
+   /**@constant @readonly */
    var z = z2 - z1
 
    // 返回平方
@@ -304,29 +341,18 @@ function getDistanceSQ(x1, y1, z1, x2, y2, z2) {
 }
 
 /**
- * @constant {function} inGame 用于判断是否在游戏中
- * @returns {Boolean} 是否在游戏中
- */
-function inGame() {
+* @constant {function} inZombiesMap 用于判断是否在玩僵尸末日
+* @returns {Boolean} 在玩僵尸末日
+*/
+function inZombiesMap() {
+   /**@constant @readonly @type {java.util.Collection<net.minecraft.scoreboard.Score>} 计分板*/
+   var scores = mc.theWorld.getScoreboard().getScores()
+   if (!scores || scores.size() === 0) return false
 
-   // 尝试调用
-   try {
+   /**@constant @readonly @type {java.lang.String} 计分板名称*/
+   var name = scores[0].getObjective().getName()
 
-      /**@type {java.lang.String} 获取计分板名称*/
-      var name = mc.theWorld.getScoreboard().getScores()[0].getObjective().getName();
-
-      // 判断name是否包含以下的字符串
-      return name === 'PreScoreboard' || name === 'health' || name === 'health_tab' || name === 'ZScoreboard';
-
-
-   } catch (error) {
-
-      /*
-       * 报错就返回 false
-       * 如果没有计分板就不在游戏 因为游戏默认都有计分板
-       */
-      return false;
-   }
+   return name === 'PreScoreboard' || name === 'health' || name === 'health_tab' || name === 'ZScoreboard'
 }
 
 /**
@@ -341,9 +367,15 @@ function inGame() {
  * @returns {number} 体积
  */
 function getVolume(maxX, maxY, maxZ, minX, minY, minZ) {
+   /**@constant @readonly */
    var lengthX = maxX - minX
+
+   /**@constant @readonly */
    var lengthY = maxY - minY
+
+   /**@constant @readonly */
    var lengthZ = maxZ - minZ
+
    return lengthX * lengthY * lengthZ
 }
 
@@ -351,7 +383,7 @@ function getVolume(maxX, maxY, maxZ, minX, minY, minZ) {
 function onLoad() {
 
    // 文字反馈模块已加载
-   chat.print('§9JS §2- §4Load')
+   chat.print('§9' + scriptName + '§2- §4Load')
 }
 
 /**@type {object} 定义脚本模块*/
