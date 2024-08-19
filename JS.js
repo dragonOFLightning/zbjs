@@ -127,6 +127,7 @@ var setting = {
 
    /**
     * @constant 浮点数选项拖动条
+    * @readonly
     * @param {string} name 选项名称
     * @param {float} def 选项默认值
     * @param {float} min 选项最小值
@@ -139,6 +140,7 @@ var setting = {
 
    /**
     * @constant 整数选项拖动条
+    * @readonly
     * @param {string} name 选项名称
     * @param {integer} def 选项默认值
     * @param {integer} min 选项最小值
@@ -150,7 +152,8 @@ var setting = {
    },
 
    /**
-    * @constant 单选项 
+    * @constant 单选项
+    * @readonly
     * @param {string} name 选项名称
     * @param {Array<string>} values 选项可选值
     * @param {string} def 选项默认值
@@ -162,6 +165,7 @@ var setting = {
 
    /**
     * @constant 开关选项
+    * @readonly
     * @param {string} name 选项名称
     * @param {boolean} def 选项默认值
     * @returns {object} 选项
@@ -172,6 +176,7 @@ var setting = {
 
    /**
     * @constant 文本选项
+    * @readonly
     * @param {string} name 选项名称 
     * @param {string} def 选项默认值
     * @returns {object} 选项
@@ -183,6 +188,7 @@ var setting = {
    // 该选项类似integer 有进度条可以滑动 根据滑动选择的数字映射对应的方块
    /**
     * @constant 方块选项
+    * @readonly
     * @param {string} name 选项名称
     * @param {integer} def 选项默认值
     * @returns {object} 选项
@@ -194,6 +200,7 @@ var setting = {
 
 /**@constant @readonly @description 设置选项 */
 var settings = {
+   /// 示例代码 请根据实际需求修改settings中的代码
    round: setting.integer('round', 101, 1, 105),
    enableFeature: setting.boolean('enableFeature', false),
    percentage: setting.float('percentage', 0.4, 0.1, 1),
@@ -202,6 +209,7 @@ var settings = {
    description: setting.text('description', 'demo'),
 }
 
+/// 除了onEnable onUpdate onDisable 其他生命周期函数内全部都有实例代码
 /**@constant @type {function} @description 模块启用时调用 */
 function onEnable() { }
 
