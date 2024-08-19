@@ -209,15 +209,16 @@ var settings = {
    description: setting.text('description', 'demo'),
 }
 
-/// 除了onEnable onUpdate onDisable 其他生命周期函数内全部都有实例代码
+/// 除了onModuleEnable onTick onModuleDisable 其他生命周期函数内全部都有实例代码
+// 为了避免与脚本的生命周期命名冲突 onModuleEnable与onModuleDisable的命名可能会有点不和谐 
 /**@constant @type {function} @description 模块启用时调用 */
-function onEnable() { }
+function onModuleEnable() { }
 
 /**@constant @type {function} @description 每刻调用 */
-function onUpdate() { }
+function onTick() { }
 
 /**@constant @type {function} @description 模块关闭时调用 */
-function onDisable() { }
+function onModuleDisable() { }
 
 /**
  * @constant @type {function} @description 监听到Packet事件时调用
@@ -298,11 +299,11 @@ JS.prototype.getDescription = function () { return 'your description' }
 /**@override @constant @returns {string} 模块类型 */
 JS.prototype.getCategory = function () { return 'Fun' }
 /**@override @constant */
-JS.prototype.onEnable = onEnable
+JS.prototype.onEnable = onModuleEnable
 /**@override @constant */
-JS.prototype.onUpdate = onUpdate
+JS.prototype.onUpdate = onTick
 /**@override @constant */
-JS.prototype.onDisable = onDisable
+JS.prototype.onDisable = onModuleDisable
 /**@override @constant */
 JS.prototype.onPacket = onPacket
 /**@override @constant */
