@@ -290,39 +290,56 @@ function onClickBlock(event) {
    var block = event.getClickedBlock()
 }
 
-/**@constant {class, function} JS 模块构造函数*/
-function JS() { }
+/// 其他函数位于模块创建前上方 模块方法定义前下方
+/**
+* @constant {function} inZombiesMap 用于判断是否在玩僵尸末日
+* @returns {Boolean} 在玩僵尸末日
+*/
+function inZombiesMap() {
+   /**@constant @readonly @type {java.util.Collection<net.minecraft.scoreboard.Score>} 计分板*/
+   var scores = mc.theWorld.getScoreboard().getScores()
+   if (!scores || scores.size() === 0) return false
+
+   /**@constant @readonly @type {java.lang.String} 计分板名称*/
+   var name = scores[0].getObjective().getName()
+
+   return name === 'PreScoreboard' || name === 'health' || name === 'health_tab' || name === 'ZScoreboard'
+}
+
+/**@constant {class, function} Module 模块构造函数*/
+function Module() { }
 /**@override @constant @returns {string} 模块名称 */
-JS.prototype.getName = function () { return scriptName }
+Module.prototype.getName = function () { return scriptName }
 /**@override @constant @returns {string} 模块描述 */
-JS.prototype.getDescription = function () { return 'your description' }
+Module.prototype.getDescription = function () { return 'your description' }
 /**@override @constant @returns {string} 模块类型 */
-JS.prototype.getCategory = function () { return 'Fun' }
+Module.prototype.getCategory = function () { return 'Fun' }
 /**@override @constant */
-JS.prototype.onEnable = onModuleEnable
+Module.prototype.onEnable = onModuleEnable
 /**@override @constant */
-JS.prototype.onUpdate = onTick
+Module.prototype.onUpdate = onTick
 /**@override @constant */
-JS.prototype.onDisable = onModuleDisable
+Module.prototype.onDisable = onModuleDisable
 /**@override @constant */
-JS.prototype.onPacket = onPacket
+Module.prototype.onPacket = onPacket
 /**@override @constant */
-JS.prototype.onRender2D = onRender2D
+Module.prototype.onRender2D = onRender2D
 /**@override @constant */
-JS.prototype.onRender3D = onRender3D
+Module.prototype.onRender3D = onRender3D
 /**@override @constant */
-JS.prototype.onAttack = onAttack
+Module.prototype.onAttack = onAttack
 /**@override @constant */
-JS.prototype.onKey = onKey
+Module.prototype.onKey = onKey
 /**@override @constant */
-JS.prototype.onClickBlock = onClickBlock
+Module.prototype.onClickBlock = onClickBlock
 /**@override @constant 覆写添加值函数 用于给模块添加选项*/
-JS.prototype.addValues = function (values) {
+Module.prototype.addValues = function (values) {
    for (var key in settings) {
       values.add(settings[key])
    }
 }
 
+/// 纯函数位于模块挂载原型下方与脚本生命周期函数上方
 /**
  * @constant {function} getEuclideanDistanceSQ 用于计算三维空间中二点之间的距离
  * @function getEuclideanDistanceSQ 纯函数
@@ -347,21 +364,6 @@ function getEuclideanDistanceSQ(x1, y1, z1, x2, y2, z2) {
 
    // 返回平方
    return x * x + y * y + z * z
-}
-
-/**
-* @constant {function} inZombiesMap 用于判断是否在玩僵尸末日
-* @returns {Boolean} 在玩僵尸末日
-*/
-function inZombiesMap() {
-   /**@constant @readonly @type {java.util.Collection<net.minecraft.scoreboard.Score>} 计分板*/
-   var scores = mc.theWorld.getScoreboard().getScores()
-   if (!scores || scores.size() === 0) return false
-
-   /**@constant @readonly @type {java.lang.String} 计分板名称*/
-   var name = scores[0].getObjective().getName()
-
-   return name === 'PreScoreboard' || name === 'health' || name === 'health_tab' || name === 'ZScoreboard'
 }
 
 /**
@@ -402,7 +404,7 @@ var scriptModule
 function onEnable() {
 
    // 注册模块
-   scriptModule = moduleManager.registerModule(new JS())
+   scriptModule = moduleManager.registerModule(new Module())
 }
 
 /**脚本禁用时调用 */
