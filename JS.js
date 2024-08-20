@@ -306,7 +306,9 @@ function inZombiesMap() {
    return name === 'PreScoreboard' || name === 'health' || name === 'health_tab' || name === 'ZScoreboard'
 }
 
-/**@constant {class, function} Module 模块构造函数*/
+/**
+ * @module module 模块
+ */
 function Module() { }
 /**@override @constant @returns {string} 模块名称 */
 Module.prototype.getName = function () { return scriptName }
@@ -320,19 +322,19 @@ Module.prototype.onEnable = onModuleEnable
 Module.prototype.onUpdate = onTick
 /**@override @constant */
 Module.prototype.onDisable = onModuleDisable
-/**@override @constant */
+/**@EventTarget @constant */
 Module.prototype.onPacket = onPacket
-/**@override @constant */
+/**@EventTarget @constant */
 Module.prototype.onRender2D = onRender2D
-/**@override @constant */
+/**@EventTarget @constant */
 Module.prototype.onRender3D = onRender3D
-/**@override @constant */
+/**@EventTarget @constant */
 Module.prototype.onAttack = onAttack
-/**@override @constant */
+/**@EventTarget @constant */
 Module.prototype.onKey = onKey
-/**@override @constant */
+/**@EventTarget @constant */
 Module.prototype.onClickBlock = onClickBlock
-/**@override @constant 覆写添加值函数 用于给模块添加选项*/
+/**@constant 模块添加选项*/
 Module.prototype.addValues = function (values) {
    for (var key in settings) {
       values.add(settings[key])
