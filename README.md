@@ -2,6 +2,9 @@
 实用的脚本用于在[Zombies]使用<br/>
 a script enhanced gaming experience for[Zombies]
 
+分支取名含义 Scripts 表示这个一个脚本库 V1则表示这个脚本使用Script API V1
+The branch name meaning is as follows: Scripts indicates that this is a script library, and V1 signifies that this script uses Script API V1.
+
 此分支即将停更 我们将会全面使用新的script v2
 This branch will soon be discontinued. We will fully transition to using the Script v2
 ---
