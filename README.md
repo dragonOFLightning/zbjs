@@ -1,11 +1,11 @@
 ---
 实用的脚本用于在[Zombies]使用<br/>
-a script enhanced gaming experience for[Zombies]
+a script enhanced gaming experience for[Zombies]<br/>
 
-分支取名含义 Scripts 表示这个一个脚本库 V1则表示这个脚本使用Script API V1
-The branch name meaning is as follows: Scripts indicates that this is a script library, and V1 signifies that this script uses Script API V1.
+分支取名含义 Scripts 表示这个一个脚本库 V1则表示这个脚本使用Script API V1<br/>
+The branch name meaning is as follows Scripts indicates that this is a script library, and V1 signifies that this script uses Script API V1.<br/>
 
-此分支即将停更 我们将会全面使用新的script v2
+此分支即将停更 我们将会全面使用新的script v2<br/>
 This branch will soon be discontinued. We will fully transition to using the Script v2
 ---
 
@@ -25,7 +25,7 @@ Just script template for develop Has no actual functionality
 How to load there script in[Minecraft]</h3>
 
 阶 1 下载[CCBlueX]的爪哇脚本解释器水影 链接<a href ='https://github.com/CCBlueX/LiquidBounce'>github.com/CCBlueX/LiquidBounce</a><br/>
-Step 1 Download the LiquidBounce JavaScript interpreter by[CCBlueX  Link<a href='https://github.com/CCBlueX/LiquidBounce'>github.com/CCBlueX/LiquidBounce</a>
+Step 1 Download the LiquidBounce JavaScript interpreter by[CCBlueX]  Link<a href='https://github.com/CCBlueX/LiquidBounce'>github.com/CCBlueX/LiquidBounce</a>
 
 阶 2 打开切换到水影主目录下的[scripts]文件夹<br/>
 Step 2 Open and switch to the[scripts]directory under the root directory of LiquidBounce
