@@ -1,6 +1,9 @@
 ---
 实用的脚本用于在[Zombies]使用<br/>
 a script enhanced gaming experience for[Zombies]
+
+此分支即将停更 我们将会全面使用新的script v2
+This branch will soon be discontinued. We will fully transition to using the Script v2
 ---
 
 <h3>有什么用和怎么用<br/>
